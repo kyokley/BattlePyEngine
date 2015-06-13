@@ -23,7 +23,3 @@ class Ship(object):
             newLocation = (newLocation[0] + refDict[orientation][0],
                             newLocation[1] + refDict[orientation][1])
             self.locations.add(newLocation)
-
-
-    def _buildLocationList(self):
-        pass
