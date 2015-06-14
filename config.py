@@ -1,7 +1,7 @@
-from ship import Ship
-
 BOARD_HEIGHT = 10
 BOARD_WIDTH = 10
+
+from ship import Ship
 
 def getDefaultShips():
     return [Ship('Carrier', 5),

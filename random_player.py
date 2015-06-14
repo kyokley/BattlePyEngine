@@ -15,6 +15,6 @@ class RandomPlayer(Player):
             orientation = random.choice(SHIP_ORIENTATIONS)
             ship.placeShip(location, orientation)
 
-    def getShot():
+    def getShot(self):
         return (random.randint(0, BOARD_WIDTH - 1),
                 random.randint(0, BOARD_HEIGHT - 1))

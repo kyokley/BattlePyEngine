@@ -26,7 +26,8 @@ class Game(object):
             # Take turns blowing ships out of the water
             self._takeTurns()
             return self.winner, self.loser
-        except:
+        except Exception, e:
+            print e
             if self.winner and self.loser:
                 return self.winner, self.loser
             else:
@@ -40,12 +41,15 @@ class Game(object):
                     player.placeShips()
 
                     if player._allShipsPlacedLegally():
+                        for ship in player.ships:
+                            print ship.locations
                         break
                 else:
                     raise PlayerException("%s failed to place ships after 100 tries" % player.name)
             except:
                 self.loser = player
                 self.winner = self.player2 if player == self.player1 else self.player1
+                raise
 
     def _takeTurns(self):
         count = -1
