@@ -4,7 +4,7 @@ from config import (BOARD_WIDTH,
 (UP,
  DOWN,
  LEFT,
- RIGHT) = xrange(4)
+ RIGHT) = SHIP_ORIENTATIONS = xrange(4)
 
 class Ship(object):
     def __init__(self, name, size):

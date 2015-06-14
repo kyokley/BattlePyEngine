@@ -28,5 +28,12 @@ class Tournament(object):
 
             if winner == self.player1:
                 self.player1Wins += 1
+                print 'Player 1 (%s) Wins!' % self.player1.name
             else:
                 self.player2Wins += 1
+                print 'Player 2 (%s) Wins!' % self.player2.name
+
+    def printStats(self):
+        print 'Games played: %s' % self.numberOfGames
+        print 'Player1 (%s) wins: %s' % (self.player1.name, self.player1Wins)
+        print 'Player2 (%s) wins: %s' % (self.player2.name, self.player2Wins)
