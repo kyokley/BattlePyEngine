@@ -39,3 +39,12 @@ class Ship(object):
                 return False
 
         return True
+
+    def addHit(self, location):
+        if location not in self.locations:
+            return
+
+        self.hits.add(location)
+
+    def isSunk(self):
+        return self.hits == self.locations
