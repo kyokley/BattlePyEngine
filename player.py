@@ -9,7 +9,7 @@ class Player(object):
     def placeShips(self):
         raise NotImplemented
 
-    def allShipsPlaced(self):
+    def _allShipsPlacedLegally(self):
         if not self.ships:
             return False
 

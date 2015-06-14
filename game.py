@@ -1,4 +1,3 @@
-from ship import Ship
 from config import getDefaultShips
 
 class PlayerException(Exception):
@@ -23,7 +22,7 @@ class Game(object):
         # Take turns blowing ships out of the water
         self._takeTurns()
 
-        raise NotImplemented
+        return self.winner, self.loser
 
     def _placeShips(self):
         for player in self.players:
@@ -31,7 +30,7 @@ class Game(object):
                 player._setShips(getDefaultShips())
                 player.placeShips()
 
-                if player.allShipsPlaced():
+                if player._allShipsPlacedLegally():
                     break
             else:
                 raise PlayerException("%s failed to place ships after 100 tries" % player.name)
@@ -59,7 +58,7 @@ class Game(object):
 
                     self.winner = offensivePlayer
                     self.loser = defensivePlayer
-                    self.turns = count
+                    self.turns = count + 1 # 0 based count
 
                     self.winner.gameWon()
                     self.loser.gameLost()
