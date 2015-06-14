@@ -3,6 +3,9 @@ from config import getDefaultShips
 class PlayerException(Exception):
     pass
 
+class SystemException(Exception):
+    pass
+
 class Game(object):
     def __init__(self, player1, player2):
         (self.player1,
@@ -14,26 +17,35 @@ class Game(object):
         self.turns = None
 
     def playGame(self):
-        # Step 1
-        # Place ships for both players
-        self._placeShips()
+        try:
+            # Step 1
+            # Place ships for both players
+            self._placeShips()
 
-        # Step 2
-        # Take turns blowing ships out of the water
-        self._takeTurns()
-
-        return self.winner, self.loser
+            # Step 2
+            # Take turns blowing ships out of the water
+            self._takeTurns()
+            return self.winner, self.loser
+        except:
+            if self.winner and self.loser:
+                return self.winner, self.loser
+            else:
+                raise SystemException('Unable to determine winner')
 
     def _placeShips(self):
         for player in self.players:
-            for i in xrange(100):
-                player._setShips(getDefaultShips())
-                player.placeShips()
+            try:
+                for i in xrange(100):
+                    player._setShips(getDefaultShips())
+                    player.placeShips()
 
-                if player._allShipsPlacedLegally():
-                    break
-            else:
-                raise PlayerException("%s failed to place ships after 100 tries" % player.name)
+                    if player._allShipsPlacedLegally():
+                        break
+                else:
+                    raise PlayerException("%s failed to place ships after 100 tries" % player.name)
+            except:
+                self.loser = player
+                self.winner = self.player2 if player == self.player1 else self.player1
 
     def _takeTurns(self):
         count = -1
