@@ -36,7 +36,7 @@ class Game(object):
     def _placeShips(self):
         for player in self.players:
             try:
-                for i in xrange(10000):
+                for i in xrange(100):
                     player._setShips(getDefaultShips())
                     player.placeShips()
 
@@ -54,9 +54,6 @@ class Game(object):
         while True:
             count += 1
 
-            #self.player1.getInfo()
-            #self.player2.getInfo()
-
             offensivePlayer = self.players[count % 2]
             defensivePlayer = self.players[(count + 1) % 2]
 
@@ -67,13 +64,10 @@ class Game(object):
                 offensivePlayer.shotHit(shot, hitShip)
 
                 if hitShip.isSunk():
-                    #defensivePlayer.getInfo()
-                    #print hitShip.name
                     offensivePlayer.shipSunk(hitShip)
                     done = defensivePlayer._checkAllShipsSunk()
                     if done:
                         # Game Over
-
                         self.winner = offensivePlayer
                         self.loser = defensivePlayer
                         self.turns = count + 1 # 0 based count
