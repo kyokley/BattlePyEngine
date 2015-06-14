@@ -1,3 +1,4 @@
+
 class Player(object):
     def __init__(self, name='player'):
         self.ships = None
@@ -28,7 +29,23 @@ class Player(object):
 
             allLocations.update(ship.locations)
 
-    def shotHit(self, location):
+        return True
+
+    def isShipPlacedLegally(self, refShip):
+        if not refShip.isPlacementValid():
+            return False
+
+        for ship in self.ships:
+            if refShip == ship:
+                continue
+
+            for location in refShip.locations:
+                if location in ship.locations:
+                    return False
+
+        return True
+
+    def shotHit(self, location, ship):
         pass
 
     def shotMissed(self, location):
@@ -48,16 +65,15 @@ class Player(object):
 
     def _checkIsHit(self, location):
         hit = False
-        sunk = None
+        hitShip = None
         for ship in self.ships:
-            if location in ship.locations:
+            if location in ship.locations and location not in ship.hits:
                 ship.addHit(location)
                 hit = True
-                if ship.isSunk():
-                    sunk = ship
+                hitShip = ship
                 break
 
-        return hit, sunk
+        return hit, hitShip
 
     def _checkAllShipsSunk(self):
         done = True
@@ -66,3 +82,14 @@ class Player(object):
                 done = False
                 break
         return done
+
+    def getAllShipLocations(self):
+        locations = set()
+        for ship in self.ships:
+            locations.update(ship.locations)
+        return locations
+
+    def getInfo(self):
+        print 'Ship Locations'
+        for ship in self.ships:
+            print '%s: %s Hits: %s' % (ship.name, sorted(list(ship.locations)), sorted(list(ship.hits)))

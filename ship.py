@@ -14,6 +14,7 @@ class Ship(object):
         self.locations = set()
 
     def placeShip(self, location, orientation):
+        self.locations = set()
         refDict = {UP: (0, 1),
                    DOWN: (0, -1),
                    LEFT: (-1, 0),
@@ -22,7 +23,7 @@ class Ship(object):
         newLocation = location
         self.locations.add(newLocation)
 
-        for i in xrange(self.size):
+        for i in xrange(self.size - 1):
             newLocation = (newLocation[0] + refDict[orientation][0],
                             newLocation[1] + refDict[orientation][1])
             self.locations.add(newLocation)

@@ -1,7 +1,7 @@
 from player import Player
 from config import (BOARD_WIDTH,
                     BOARD_HEIGHT)
-from ship import SHIP_ORIENTATIONS
+from ship import UP, RIGHT
 import random
 
 class RandomPlayer(Player):
@@ -12,11 +12,16 @@ class RandomPlayer(Player):
         for ship in self.ships:
             isValid = False
             while not isValid:
-                location = (random.randint(0, BOARD_WIDTH - 1),
-                            random.randint(0, BOARD_HEIGHT - 1))
-                orientation = random.choice(SHIP_ORIENTATIONS)
+                orientation = random.choice([UP, RIGHT])
+                if orientation == UP:
+                    location = (random.randint(0, BOARD_WIDTH - 1),
+                                random.randint(0, BOARD_HEIGHT - 1 - ship.size))
+                else:
+                    location = (random.randint(0, BOARD_WIDTH - 1 - ship.size),
+                                random.randint(0, BOARD_HEIGHT - 1))
                 ship.placeShip(location, orientation)
-                if ship.isPlacementValid():
+
+                if self.isShipPlacedLegally(ship):
                     isValid = True
 
     def getShot(self):

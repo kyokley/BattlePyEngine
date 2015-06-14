@@ -36,16 +36,14 @@ class Game(object):
     def _placeShips(self):
         for player in self.players:
             try:
-                for i in xrange(100):
+                for i in xrange(10000):
                     player._setShips(getDefaultShips())
                     player.placeShips()
 
                     if player._allShipsPlacedLegally():
-                        for ship in player.ships:
-                            print ship.locations
                         break
                 else:
-                    raise PlayerException("%s failed to place ships after 100 tries" % player.name)
+                    raise PlayerException("%s failed to place ships after %s tries" % (player.name, i + 1))
             except:
                 self.loser = player
                 self.winner = self.player2 if player == self.player1 else self.player1
@@ -55,26 +53,34 @@ class Game(object):
         count = -1
         while True:
             count += 1
+
+            #self.player1.getInfo()
+            #self.player2.getInfo()
+
             offensivePlayer = self.players[count % 2]
             defensivePlayer = self.players[(count + 1) % 2]
 
             shot = offensivePlayer.getShot()
-            hit, sunk = defensivePlayer._checkIsHit(shot)
+            hit, hitShip = defensivePlayer._checkIsHit(shot)
 
             if hit:
-                offensivePlayer.shotHit(shot)
+                offensivePlayer.shotHit(shot, hitShip)
+
+                if hitShip.isSunk():
+                    #defensivePlayer.getInfo()
+                    #print hitShip.name
+                    offensivePlayer.shipSunk(hitShip)
+                    done = defensivePlayer._checkAllShipsSunk()
+                    if done:
+                        # Game Over
+
+                        self.winner = offensivePlayer
+                        self.loser = defensivePlayer
+                        self.turns = count + 1 # 0 based count
+
+                        self.winner.gameWon()
+                        self.loser.gameLost()
+                        break
             else:
                 offensivePlayer.shotMissed(shot)
 
-            if sunk:
-                offensivePlayer.shipSunk(sunk)
-                done = defensivePlayer._checkAllShipsSunk()
-                if done:
-                    # Game Over
-
-                    self.winner = offensivePlayer
-                    self.loser = defensivePlayer
-                    self.turns = count + 1 # 0 based count
-
-                    self.winner.gameWon()
-                    self.loser.gameLost()
