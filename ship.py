@@ -1,3 +1,6 @@
+from config import (BOARD_WIDTH,
+                    BOARD_HEIGHT,
+                    )
 (UP,
  DOWN,
  LEFT,
@@ -23,3 +26,16 @@ class Ship(object):
             newLocation = (newLocation[0] + refDict[orientation][0],
                             newLocation[1] + refDict[orientation][1])
             self.locations.add(newLocation)
+
+    def isPlacementValid(self):
+        if not self.locations:
+            return False
+
+        for location in self.locations:
+            if (location[0] < 0 or
+                location[0] >= BOARD_WIDTH or
+                location[1] < 0 or
+                location[1] >= BOARD_HEIGHT):
+                return False
+
+        return True
