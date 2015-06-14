@@ -10,10 +10,14 @@ class RandomPlayer(Player):
 
     def placeShips(self):
         for ship in self.ships:
-            location = (random.randint(0, BOARD_WIDTH - 1),
-                        random.randint(0, BOARD_HEIGHT - 1))
-            orientation = random.choice(SHIP_ORIENTATIONS)
-            ship.placeShip(location, orientation)
+            isValid = False
+            while not isValid:
+                location = (random.randint(0, BOARD_WIDTH - 1),
+                            random.randint(0, BOARD_HEIGHT - 1))
+                orientation = random.choice(SHIP_ORIENTATIONS)
+                ship.placeShip(location, orientation)
+                if ship.isPlacementValid():
+                    isValid = True
 
     def getShot(self):
         return (random.randint(0, BOARD_WIDTH - 1),
