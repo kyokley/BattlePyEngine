@@ -9,5 +9,15 @@ def getDefaultShips():
             ]
 
 class Game(object):
-    def __init__(self, player1, player2, board=None, ships=None):
-        pass
+    def __init__(self, player1, player2):
+        self.player1 = player1
+        self.player2 = player2
+
+    def newGame(self):
+        raise NotImplemented
+
+    def _placeShips(self):
+        raise NotImplemented
+
+    def _takeTurn(self):
+        raise NotImplemented
