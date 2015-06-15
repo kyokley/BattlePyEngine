@@ -61,6 +61,7 @@ class Game(object):
                 raise PlayerException(e, offensivePlayer)
 
             hit, hitShip = defensivePlayer._checkIsHit(shot)
+            defensivePlayer.opponentShot(shot)
 
             if hit:
                 try:

@@ -1,4 +1,3 @@
-
 class Player(object):
     def __init__(self, name='player'):
         self.ships = None
@@ -25,10 +24,10 @@ class Player(object):
 
         return True
 
-    def shotHit(self, location, ship):
+    def shotHit(self, shot, ship):
         pass
 
-    def shotMissed(self, location):
+    def shotMissed(self, shot):
         pass
 
     def shipSunk(self, ship):
@@ -44,6 +43,9 @@ class Player(object):
         pass
 
     def newGame(self):
+        pass
+
+    def opponentShot(self, shot):
         pass
 
     def _setShips(self, ships):
@@ -66,12 +68,12 @@ class Player(object):
 
         return True
 
-    def _checkIsHit(self, location):
+    def _checkIsHit(self, shot):
         hit = False
         hitShip = None
         for ship in self.ships:
-            if location in ship.locations and location not in ship.hits:
-                ship.addHit(location)
+            if shot in ship.locations and shot not in ship.hits:
+                ship.addHit(shot)
                 hit = True
                 hitShip = ship
                 break
