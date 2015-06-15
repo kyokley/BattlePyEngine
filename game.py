@@ -18,6 +18,9 @@ class Game(object):
 
     def playGame(self):
         try:
+            for player in self.players:
+                player.newGame()
+
             # Step 1
             # Place ships for both players
             self._placeShips()

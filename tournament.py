@@ -12,7 +12,6 @@ class Tournament(object):
             self.player1Alias = self.player1.name
             self.player2Alias = self.player2.name
 
-
         self.numberOfGames = numberOfGames
 
         self.player1Wins = 0

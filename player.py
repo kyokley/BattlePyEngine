@@ -8,28 +8,8 @@ class Player(object):
     def initPlayer(self):
         pass
 
-    def _setShips(self, ships):
-        self.ships = ships
-
     def placeShips(self):
         raise NotImplemented
-
-    def _allShipsPlacedLegally(self):
-        if not self.ships:
-            return False
-
-        allLocations = set()
-        for ship in self.ships:
-            if not ship.isPlacementValid():
-                return False
-
-            for location in ship.locations:
-                if location in allLocations:
-                    return False
-
-            allLocations.update(ship.locations)
-
-        return True
 
     def isShipPlacedLegally(self, refShip):
         if not refShip.isPlacementValid():
@@ -63,6 +43,29 @@ class Player(object):
     def gameLost(self):
         pass
 
+    def newGame(self):
+        pass
+
+    def _setShips(self, ships):
+        self.ships = ships
+
+    def _allShipsPlacedLegally(self):
+        if not self.ships:
+            return False
+
+        allLocations = set()
+        for ship in self.ships:
+            if not ship.isPlacementValid():
+                return False
+
+            for location in ship.locations:
+                if location in allLocations:
+                    return False
+
+            allLocations.update(ship.locations)
+
+        return True
+
     def _checkIsHit(self, location):
         hit = False
         hitShip = None
@@ -82,12 +85,6 @@ class Player(object):
                 done = False
                 break
         return done
-
-    def getAllShipLocations(self):
-        locations = set()
-        for ship in self.ships:
-            locations.update(ship.locations)
-        return locations
 
     def getInfo(self):
         print 'Ship Locations'
