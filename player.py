@@ -9,7 +9,7 @@ class Player(object):
         pass
 
     def placeShips(self):
-        raise NotImplemented
+        raise NotImplementedError()
 
     def isShipPlacedLegally(self, refShip):
         if not refShip.isPlacementValid():
@@ -35,7 +35,7 @@ class Player(object):
         pass
 
     def fireShot(self):
-        raise NotImplemented
+        raise NotImplementedError()
 
     def gameWon(self):
         pass
