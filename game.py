@@ -62,6 +62,7 @@ class Game(object):
 
             shot = offensivePlayer.getShot()
             hit, hitShip = defensivePlayer._checkIsHit(shot)
+            defensivePlayer.opponentShot(shot)
 
             if hit:
                 offensivePlayer.shotHit(shot, hitShip)
@@ -80,4 +81,3 @@ class Game(object):
                         break
             else:
                 offensivePlayer.shotMissed(shot)
-
