@@ -72,7 +72,7 @@ class Player(object):
         hit = False
         hitShip = None
         for ship in self.ships:
-            if shot in ship.shots and shot not in ship.hits:
+            if shot in ship.locations and shot not in ship.hits:
                 ship.addHit(shot)
                 hit = True
                 hitShip = ship
