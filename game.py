@@ -55,21 +55,35 @@ class Game(object):
             offensivePlayer = self.players[count % 2]
             defensivePlayer = self.players[(count + 1) % 2]
 
-            shot = offensivePlayer.fireShot()
+            try:
+                shot = offensivePlayer.fireShot()
+            except Exception, e:
+                raise PlayerException(e, offensivePlayer)
+
             hit, hitShip = defensivePlayer._checkIsHit(shot)
 
             if hit:
-                offensivePlayer.shotHit(shot, hitShip)
+                try:
+                    offensivePlayer.shotHit(shot, hitShip)
+                except Exception, e:
+                    raise PlayerException(e, offensivePlayer)
+
 
                 if hitShip.isSunk():
-                    offensivePlayer.shipSunk(hitShip)
+                    try:
+                        offensivePlayer.shipSunk(hitShip)
+                    except Exception, e:
+                        raise PlayerException(e, offensivePlayer)
                     done = defensivePlayer._checkAllShipsSunk()
                     if done:
                         # Game Over
                         self._gameOver(defensivePlayer, turns=count + 1)
                         break
             else:
-                offensivePlayer.shotMissed(shot)
+                try:
+                    offensivePlayer.shotMissed(shot)
+                except Exception, e:
+                    raise PlayerException(e, offensivePlayer)
 
     def _gameOver(self,
                   loser,
