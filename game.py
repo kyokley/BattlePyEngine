@@ -29,28 +29,23 @@ class Game(object):
             # Take turns blowing ships out of the water
             self._takeTurns()
             return self.winner, self.loser
-        except Exception, e:
-            print e
-            if self.winner and self.loser:
-                return self.winner, self.loser
-            else:
-                raise SystemException('Unable to determine winner')
+        except PlayerException, e:
+            return self._gameOver(e.args[1], exception=e)
 
     def _placeShips(self):
         for player in self.players:
-            try:
                 for i in xrange(100):
                     player._setShips(getDefaultShips())
-                    player.placeShips()
+                    try:
+                        player.placeShips()
+                    except Exception, e:
+                        print e
+                        raise PlayerException(e, player)
 
                     if player._allShipsPlacedLegally():
                         break
                 else:
-                    raise PlayerException("%s failed to place ships after %s tries" % (player.name, i + 1))
-            except:
-                self.loser = player
-                self.winner = self.player2 if player == self.player1 else self.player1
-                raise
+                    raise PlayerException("%s failed to place ships after %s tries" % (player.name, i + 1), player)
 
     def _takeTurns(self):
         count = -1
@@ -71,13 +66,20 @@ class Game(object):
                     done = defensivePlayer._checkAllShipsSunk()
                     if done:
                         # Game Over
-                        self.winner = offensivePlayer
-                        self.loser = defensivePlayer
-                        self.turns = count + 1 # 0 based count
-
-                        self.winner.gameWon()
-                        self.loser.gameLost()
+                        self._gameOver(defensivePlayer, turns=count + 1)
                         break
             else:
                 offensivePlayer.shotMissed(shot)
 
+    def _gameOver(self,
+                  loser,
+                  turns=0,
+                  exception=None):
+        self.loser = loser
+        self.winner = self.player1 if loser == self.player2 else self.player2
+        self.turns = turns
+        self.exception = exception
+
+        self.winner.gameWon()
+        self.loser.gameLost()
+        return self.winner, self.loser
