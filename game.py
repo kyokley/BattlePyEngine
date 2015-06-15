@@ -60,7 +60,7 @@ class Game(object):
             offensivePlayer = self.players[count % 2]
             defensivePlayer = self.players[(count + 1) % 2]
 
-            shot = offensivePlayer.getShot()
+            shot = offensivePlayer.fireShot()
             hit, hitShip = defensivePlayer._checkIsHit(shot)
 
             if hit:

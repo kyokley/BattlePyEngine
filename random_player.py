@@ -24,6 +24,6 @@ class RandomPlayer(Player):
                 if self.isShipPlacedLegally(ship):
                     isValid = True
 
-    def getShot(self):
+    def fireShot(self):
         return (random.randint(0, BOARD_WIDTH - 1),
                 random.randint(0, BOARD_HEIGHT - 1))

@@ -34,7 +34,7 @@ class Player(object):
     def shipSunk(self, ship):
         pass
 
-    def getShot(self):
+    def fireShot(self):
         raise NotImplemented
 
     def gameWon(self):
