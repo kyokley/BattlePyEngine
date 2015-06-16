@@ -55,16 +55,9 @@ class Player(object):
         if not self.ships:
             return False
 
-        allLocations = set()
         for ship in self.ships:
-            if not ship.isPlacementValid():
+            if not self.isShipPlacedLegally(ship):
                 return False
-
-            for location in ship.locations:
-                if location in allLocations:
-                    return False
-
-            allLocations.update(ship.locations)
 
         return True
 
