@@ -78,3 +78,31 @@ class TestCheckIsHit(unittest.TestCase):
 
         self.assertTrue(hit)
         self.assertEqual(hitShip, self.ship1)
+
+class TestCheckAllShipsSunk(unittest.TestCase):
+    def setUp(self):
+        self.testPlayer = Player()
+        self.ship1 = Ship('ship1', 3)
+        self.ship2 = Ship('ship2', 4)
+        self.ship3 = Ship('ship3', 2)
+        self.testPlayer._setShips([self.ship1,
+                                   self.ship2,
+                                   self.ship3,
+                                   ])
+        self.ship1.placeShip((5, 5), DOWN)
+        self.ship2.placeShip((0, 6), RIGHT)
+        self.ship3.placeShip((6, 5), RIGHT)
+
+    def test_noShipsSunk(self):
+        self.assertFalse(self.testPlayer._checkAllShipsSunk())
+
+    def test_oneShipSunk(self):
+        self.ship1.hits = self.ship1.locations
+        self.assertFalse(self.testPlayer._checkAllShipsSunk())
+
+    def test_allShipsSunk(self):
+        self.ship1.hits = self.ship1.locations
+        self.ship2.hits = self.ship2.locations
+        self.ship3.hits = self.ship3.locations
+
+        self.assertTrue(self.testPlayer._checkAllShipsSunk())
