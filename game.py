@@ -1,4 +1,10 @@
-from config import getDefaultShips
+from config import DEFAULT_SHIPS
+from ship import Ship
+
+def createShips(specs=None):
+    if not specs:
+        specs = DEFAULT_SHIPS
+    return [Ship(*x) for x in specs]
 
 class PlayerException(Exception):
     pass
@@ -35,7 +41,7 @@ class Game(object):
     def _placeShips(self):
         for player in self.players:
                 for i in xrange(100):
-                    player._setShips(getDefaultShips())
+                    player._setShips(createShips())
                     try:
                         player.placeShips()
                     except Exception, e:
