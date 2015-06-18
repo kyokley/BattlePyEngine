@@ -6,7 +6,7 @@ import random
 
 class ImprovedRandomPlayer(Player):
     def initPlayer(self):
-        self.name = 'RandomPlayer'
+        self.name = 'ImprovedRandomPlayer'
 
     def newGame(self):
         self.shots = set()
