@@ -1,5 +1,5 @@
 import unittest, mock
-from game import Game
+from game import Game, PlayerException
 
 class TestPlayGame(unittest.TestCase):
     def setUp(self):
@@ -26,3 +26,39 @@ class TestPlaceShips(unittest.TestCase):
         self.player2 = mock.MagicMock()
 
         self.game = Game(self.player1, self.player2)
+
+    def test_shipsPlacedLegally(self):
+        self.player1._allShipsPlacedLegally.return_value = True
+        self.player2._allShipsPlacedLegally.return_value = True
+
+        self.game._placeShips()
+
+        self.assertTrue(self.player1._setShips.called)
+        self.assertTrue(self.player2._setShips.called)
+
+        self.assertTrue(self.player1.placeShips.called)
+        self.assertTrue(self.player2.placeShips.called)
+
+        self.assertTrue(self.player1._allShipsPlacedLegally.called)
+        self.assertTrue(self.player2._allShipsPlacedLegally.called)
+
+    def test_shipsPlacedIllegally(self):
+        self.player1._allShipsPlacedLegally.return_value = True
+        self.player2._allShipsPlacedLegally.return_value = False
+
+        try:
+            self.game._placeShips()
+        except Exception, e:
+            exception = e
+
+        self.assertTrue(self.player1._setShips.called)
+        self.assertTrue(self.player2._setShips.called)
+
+        self.assertTrue(self.player1.placeShips.called)
+        self.assertTrue(self.player2.placeShips.called)
+
+        self.assertTrue(self.player1._allShipsPlacedLegally.called)
+        self.assertTrue(self.player2._allShipsPlacedLegally.called)
+
+        self.assertEquals(self.player2, exception.args[1])
+        self.assertTrue(isinstance(exception, PlayerException))

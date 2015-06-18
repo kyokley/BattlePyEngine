@@ -42,7 +42,7 @@ class TestIsPlacementValid(unittest.TestCase):
     def setUp(self):
         self.testShip = Ship('testShip1', 3)
 
-    def test_shipPlacedOffBoard(self):
+    def test_isPlacementValid(self):
         self.testShip.placeShip((0, 1), DOWN)
         self.assertFalse(self.testShip.isPlacementValid())
 
@@ -53,6 +53,12 @@ class TestIsPlacementValid(unittest.TestCase):
         self.assertFalse(self.testShip.isPlacementValid())
 
         self.testShip.placeShip((5, 5), UP)
+        self.assertTrue(self.testShip.isPlacementValid())
+
+        self.testShip.placeShip((0, 0), UP)
+        self.assertTrue(self.testShip.isPlacementValid())
+
+        self.testShip.placeShip((9, 0), UP)
         self.assertTrue(self.testShip.isPlacementValid())
 
 class TestAddHit(unittest.TestCase):
