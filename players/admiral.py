@@ -9,7 +9,7 @@ from ship import (UP,
                   SHIP_ORIENTATIONS,
                   VECTOR_DICT,
                   )
-import random
+import random, math
 
 VERSION = 'v0.1'
 (SEARCH,
@@ -54,12 +54,59 @@ class Admiral(Player):
 
         print self.searchMat
 
-    def shotHit(self, shot, shipName):
-        self.foundShips[shipName].append(shot)
+    @staticmethod
+    def getDistance(x, y):
+        dist = math.sqrt(x**2 + y**2) 
+        return dist
 
-        if len(self.foundShips[shipName]) > 1:
+    def findMinMaxPoint(self, points):
+        minPoint = None
+        maxPoint = None
+        for point in points:
+            if not maxPoint:
+                maxPoint = point
+            if not minPoint:
+                minPoint = point
+            maxDist = self.getDistance(maxPoint[0], maxPoint[1])
+            minDist = self.getDistance(minPoint[0], minPoint[1])
+            pointDist = self.getDistance(point[0], point[1])
+
+            if pointDist > maxDist:
+                maxPoint = point
+            if pointDist < minDist:
+                minPoint = point
+        return maxPoint, minPoint
+
+    def normalize(self, shot):
+        if shot[0] > 0:
+            x = 1
+        elif shot[0] < 0:
+            x = -1
+        else:
+            x = 0
+
+        if shot[1] > 0:
+            y = 1
+        elif shot[1] < 0:
+            y = -1
+        else:
+            y = 0
+
+    def shotHit(self, shot, shipName):
+        hitShip = self.foundShips[shipName]
+        hitShip.append(shot)
+
+        if len(hitShip) > 1:
             # Filter out impossible locations
-            pass
+            maxPoint, minPoint = self.findMinMaxPoint(hitShip)
+
+            shipLine = (maxPoint[0] - minPoint[0],
+                        maxPoint[1] - minPoint[1])
+
+            possibleLocations = []
+            for remaining in xrange(self.shipSizes[shipName] - len(hitShip)):
+                possibleShot = (minPoint[0]
+
         else:
             # Build out the full kill matrix
             for i in xrange(1, self.shipSizes[shipName] - 1):
