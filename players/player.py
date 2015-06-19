@@ -24,13 +24,13 @@ class Player(object):
 
         return True
 
-    def shotHit(self, shot, ship):
+    def shotHit(self, shot, shipName):
         pass
 
     def shotMissed(self, shot):
         pass
 
-    def shipSunk(self, ship):
+    def shipSunk(self, shipName):
         pass
 
     def fireShot(self):

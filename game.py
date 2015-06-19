@@ -25,6 +25,7 @@ class Game(object):
     def playGame(self):
         try:
             for player in self.players:
+                player._setShips(createShips())
                 player.newGame()
 
             # Step 1
@@ -41,7 +42,6 @@ class Game(object):
     def _placeShips(self):
         for player in self.players:
                 for i in xrange(100):
-                    player._setShips(createShips())
                     try:
                         player.placeShips()
                     except Exception, e:
@@ -71,14 +71,14 @@ class Game(object):
 
             if hit:
                 try:
-                    offensivePlayer.shotHit(shot, hitShip)
+                    offensivePlayer.shotHit(shot, hitShip.name)
                 except Exception, e:
                     raise PlayerException(e, offensivePlayer)
 
 
                 if hitShip.isSunk():
                     try:
-                        offensivePlayer.shipSunk(hitShip)
+                        offensivePlayer.shipSunk(hitShip.name)
                     except Exception, e:
                         raise PlayerException(e, offensivePlayer)
                     done = defensivePlayer._checkAllShipsSunk()

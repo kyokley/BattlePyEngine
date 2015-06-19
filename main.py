@@ -1,9 +1,10 @@
 from tournament import Tournament
 from players.random_player import RandomPlayer
 from players.improved_random_player import ImprovedRandomPlayer
+from players.admiral import Admiral
 
 def main():
-    tournament = Tournament(ImprovedRandomPlayer(), ImprovedRandomPlayer(), 100)
+    tournament = Tournament(Admiral(), ImprovedRandomPlayer(), 100)
     tournament.start()
     tournament.printStats()
 

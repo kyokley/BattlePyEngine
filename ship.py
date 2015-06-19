@@ -5,6 +5,10 @@ from config import (BOARD_WIDTH,
  DOWN,
  LEFT,
  RIGHT) = SHIP_ORIENTATIONS = xrange(4)
+VECTOR_DICT = {UP: (0, 1),
+               DOWN: (0, -1),
+               LEFT: (-1, 0),
+               RIGHT: (1, 0)}
 
 class Ship(object):
     def __init__(self, name, size):
@@ -15,17 +19,13 @@ class Ship(object):
 
     def placeShip(self, location, orientation):
         self.locations = set()
-        refDict = {UP: (0, 1),
-                   DOWN: (0, -1),
-                   LEFT: (-1, 0),
-                   RIGHT: (1, 0)}
 
         newLocation = location
         self.locations.add(newLocation)
 
         for i in xrange(self.size - 1):
-            newLocation = (newLocation[0] + refDict[orientation][0],
-                            newLocation[1] + refDict[orientation][1])
+            newLocation = (newLocation[0] + VECTOR_DICT[orientation][0],
+                            newLocation[1] + VECTOR_DICT[orientation][1])
             self.locations.add(newLocation)
 
     def isPlacementValid(self):
@@ -49,3 +49,6 @@ class Ship(object):
 
     def isSunk(self):
         return self.hits == self.locations
+
+    def getProtoShip(self):
+        return Ship(self.name, self.size)
