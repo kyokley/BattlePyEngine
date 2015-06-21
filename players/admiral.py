@@ -92,6 +92,8 @@ class Admiral(Player):
         else:
             y = 0
 
+        return x, y
+
     def shotHit(self, shot, shipName):
         hitShip = self.foundShips[shipName]
         hitShip.append(shot)
@@ -100,12 +102,22 @@ class Admiral(Player):
             # Filter out impossible locations
             maxPoint, minPoint = self.findMinMaxPoint(hitShip)
 
-            shipLine = (maxPoint[0] - minPoint[0],
-                        maxPoint[1] - minPoint[1])
+            shipLine = self.normalize((maxPoint[0] - minPoint[0],
+                                       maxPoint[1] - minPoint[1]))
 
             possibleLocations = []
-            for remaining in xrange(self.shipSizes[shipName] - len(hitShip)):
-                possibleShot = (minPoint[0]
+            for i in xrange(1, self.shipSizes[shipName] - len(hitShip) + 1):
+                possibleShot = (minPoint[0] - i * shipLine[0],
+                                minPoint[1] - i * shipLine[1])
+                if isValidPoint(possibleShot):
+                    possibleLocations.append(possibleShot)
+
+                possibleShot = (maxPoint[0] + i * shipLine[0],
+                                maxPoint[1] + i * shipLine[1])
+                if isValidPoint(possibleShot):
+                    possibleLocations.append(possibleShot)
+
+            self.killMats[shipName] = set(possibleLocations)
 
         else:
             # Build out the full kill matrix
@@ -114,6 +126,10 @@ class Admiral(Player):
                     vector = (VECTOR_DICT[direction][0] * i,
                               VECTOR_DICT[direction][1] * i)
                     self.killMats[shipName].add((shot[0] + vector[0], shot[1] + vector[1]))
+
+    def shipSunk(self, shipName):
+        pass
+
 
     def placeShips(self):
         for ship in self.ships:
