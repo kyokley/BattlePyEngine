@@ -84,6 +84,8 @@ class Game(object):
                     done = defensivePlayer._checkAllShipsSunk()
                     if done:
                         # Game Over
+                        for player in self.players:
+                            player._getInfo()
                         self._gameOver(defensivePlayer, turns=count + 1)
                         break
             else:
@@ -91,6 +93,9 @@ class Game(object):
                     offensivePlayer.shotMissed(shot)
                 except Exception, e:
                     raise PlayerException(e, offensivePlayer)
+
+            for player in self.players:
+                player._getInfo()
 
     def _gameOver(self,
                   loser,

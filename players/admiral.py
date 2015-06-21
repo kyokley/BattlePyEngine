@@ -1,3 +1,4 @@
+import ipdb
 from player import Player
 from config import (BOARD_WIDTH,
                     BOARD_HEIGHT,
@@ -29,6 +30,45 @@ def isValidPoint(point):
     return (0 <= point[0] < BOARD_WIDTH and
             0 <= point[1] < BOARD_HEIGHT)
 
+def findMinMaxPoint(points):
+    minPoint = None
+    maxPoint = None
+    for point in points:
+        if not maxPoint:
+            maxPoint = point
+        if not minPoint:
+            minPoint = point
+        maxDist = getDistance(maxPoint[0], maxPoint[1])
+        minDist = getDistance(minPoint[0], minPoint[1])
+        pointDist = getDistance(point[0], point[1])
+
+        if pointDist > maxDist:
+            maxPoint = point
+        if pointDist < minDist:
+            minPoint = point
+    return minPoint, maxPoint
+
+def normalize(shot):
+    if shot[0] > 0:
+        x = 1
+    elif shot[0] < 0:
+        x = -1
+    else:
+        x = 0
+
+    if shot[1] > 0:
+        y = 1
+    elif shot[1] < 0:
+        y = -1
+    else:
+        y = 0
+
+    return x, y
+
+def getDistance(x, y):
+    dist = math.sqrt(x**2 + y**2) 
+    return dist
+
 class Admiral(Player):
     def initPlayer(self):
         self.name = 'Admiral %s' % VERSION
@@ -54,59 +94,19 @@ class Admiral(Player):
 
         print self.searchMat
 
-    @staticmethod
-    def getDistance(x, y):
-        dist = math.sqrt(x**2 + y**2) 
-        return dist
-
-    def findMinMaxPoint(self, points):
-        minPoint = None
-        maxPoint = None
-        for point in points:
-            if not maxPoint:
-                maxPoint = point
-            if not minPoint:
-                minPoint = point
-            maxDist = self.getDistance(maxPoint[0], maxPoint[1])
-            minDist = self.getDistance(minPoint[0], minPoint[1])
-            pointDist = self.getDistance(point[0], point[1])
-
-            if pointDist > maxDist:
-                maxPoint = point
-            if pointDist < minDist:
-                minPoint = point
-        return maxPoint, minPoint
-
-    def normalize(self, shot):
-        if shot[0] > 0:
-            x = 1
-        elif shot[0] < 0:
-            x = -1
-        else:
-            x = 0
-
-        if shot[1] > 0:
-            y = 1
-        elif shot[1] < 0:
-            y = -1
-        else:
-            y = 0
-
-        return x, y
-
     def shotHit(self, shot, shipName):
-        hitShip = self.foundShips[shipName]
-        hitShip.append(shot)
+        hitLocations = self.foundShips[shipName]
+        hitLocations.append(shot)
 
-        if len(hitShip) > 1:
+        if len(hitLocations) > 1:
             # Filter out impossible locations
-            maxPoint, minPoint = self.findMinMaxPoint(hitShip)
+            minPoint, maxPoint = findMinMaxPoint(hitLocations)
 
-            shipLine = self.normalize((maxPoint[0] - minPoint[0],
+            shipLine = normalize((maxPoint[0] - minPoint[0],
                                        maxPoint[1] - minPoint[1]))
 
             possibleLocations = []
-            for i in xrange(1, self.shipSizes[shipName] - len(hitShip) + 1):
+            for i in xrange(1, self.shipSizes[shipName] - len(hitLocations) + 1):
                 possibleShot = (minPoint[0] - i * shipLine[0],
                                 minPoint[1] - i * shipLine[1])
                 if isValidPoint(possibleShot):
@@ -121,15 +121,26 @@ class Admiral(Player):
 
         else:
             # Build out the full kill matrix
-            for i in xrange(1, self.shipSizes[shipName] - 1):
-                for direction in SHIP_ORIENTATIONS:
-                    vector = (VECTOR_DICT[direction][0] * i,
-                              VECTOR_DICT[direction][1] * i)
-                    self.killMats[shipName].add((shot[0] + vector[0], shot[1] + vector[1]))
+            for direction in SHIP_ORIENTATIONS:
+                vector = (VECTOR_DICT[direction][0],
+                          VECTOR_DICT[direction][1])
+                possibleShot = (shot[0] + vector[0], shot[1] + vector[1])
+                if isValidPoint(possibleShot):
+                    self.killMats[shipName].add(possibleShot)
+
+        if self.killMats[shipName]:
+            self.offense = DESTROY
 
     def shipSunk(self, shipName):
-        pass
+        ipdb.set_trace() ############################## Breakpoint ##############################
+        self.killMats[shipName] = set()
 
+        for killMat in self.killMats.itervalues():
+            if killMat:
+                self.offense = DESTROY
+                break
+        else:
+            self.offense = SEARCH
 
     def placeShips(self):
         for ship in self.ships:
@@ -147,13 +158,36 @@ class Admiral(Player):
                 if self.isShipPlacedLegally(ship):
                     isValid = True
 
-    def fireShot(self):
+    def getRandomShot(self):
         shot = (random.randint(0, BOARD_WIDTH - 1),
                 random.randint(0, BOARD_HEIGHT - 1))
 
         while shot in self.shots:
             shot = (random.randint(0, BOARD_WIDTH - 1),
                     random.randint(0, BOARD_HEIGHT - 1))
-        self.shots.add(shot)
+
         return shot
 
+    def fireShot(self):
+        shot = None
+
+        while shot is None or shot in self.shots:
+            if self.offense == RANDOM:
+                shot = self.getRandomShot()
+            elif self.offense == DESTROY:
+                for killMat in self.killMats.itervalues():
+                    if killMat:
+                        shot = random.choice(list(killMat))
+                        killMat.remove(shot)
+                        break
+                else:
+                    ipdb.set_trace() ############################## Breakpoint ##############################
+                    self.offense = SEARCH
+            elif self.offense == SEARCH:
+                if self.searchMat:
+                    shot = random.choice(self.searchMat)
+                    self.searchMat.remove(shot)
+                else:
+                    shot = self.getRandomShot()
+        self.shots.add(shot)
+        return shot

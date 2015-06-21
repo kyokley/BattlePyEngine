@@ -81,7 +81,8 @@ class Player(object):
                 break
         return done
 
-    def getInfo(self):
+    def _getInfo(self):
+        print self.name
         print 'Ship Locations'
         for ship in self.ships:
             print '%s: %s Hits: %s' % (ship.name, sorted(list(ship.locations)), sorted(list(ship.hits)))

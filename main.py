@@ -4,7 +4,7 @@ from players.improved_random_player import ImprovedRandomPlayer
 from players.admiral import Admiral
 
 def main():
-    tournament = Tournament(ImprovedRandomPlayer(), ImprovedRandomPlayer(), 100)
+    tournament = Tournament(Admiral(), ImprovedRandomPlayer(), 1)
     tournament.start()
     tournament.printStats()
 
