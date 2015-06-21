@@ -1,4 +1,3 @@
-import ipdb
 from player import Player
 from config import (BOARD_WIDTH,
                     BOARD_HEIGHT,
@@ -132,7 +131,6 @@ class Admiral(Player):
             self.offense = DESTROY
 
     def shipSunk(self, shipName):
-        ipdb.set_trace() ############################## Breakpoint ##############################
         self.killMats[shipName] = set()
 
         for killMat in self.killMats.itervalues():
@@ -181,7 +179,6 @@ class Admiral(Player):
                         killMat.remove(shot)
                         break
                 else:
-                    ipdb.set_trace() ############################## Breakpoint ##############################
                     self.offense = SEARCH
             elif self.offense == SEARCH:
                 if self.searchMat:
