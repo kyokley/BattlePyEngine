@@ -79,22 +79,11 @@ class Admiral(Player):
         self.searchMat = []
         self.killMats = dict(((x[0], set()) for x in DEFAULT_SHIPS))
 
-        shipSizes = [x.size for x in self.ships]
-
         self.offense = SEARCH
-
-        #for i in xrange(BOARD_HEIGHT):
-            #if i % 2 == 0:
-                #for j in xrange(BOARD_WIDTH):
-                    #smallMod = (i % (minShipSize + 1))
-                    #if j % (minShipSize + 1) == smallMod:
-                        #self.searchMat.append((i, j))
 
         for i in xrange(BOARD_HEIGHT):
             for j in xrange(i % 2, BOARD_WIDTH, 2):
                 self.searchMat.append((i, j))
-
-        print self.searchMat
 
     def shotHit(self, shot, shipName):
         hitLocations = self.foundShips[shipName]
