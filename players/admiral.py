@@ -80,16 +80,19 @@ class Admiral(Player):
         self.killMats = dict(((x[0], set()) for x in DEFAULT_SHIPS))
 
         shipSizes = [x.size for x in self.ships]
-        minShipSize = min(shipSizes)
 
         self.offense = SEARCH
 
+        #for i in xrange(BOARD_HEIGHT):
+            #if i % 2 == 0:
+                #for j in xrange(BOARD_WIDTH):
+                    #smallMod = (i % (minShipSize + 1))
+                    #if j % (minShipSize + 1) == smallMod:
+                        #self.searchMat.append((i, j))
+
         for i in xrange(BOARD_HEIGHT):
-            if i % 2 == 0:
-                for j in xrange(BOARD_WIDTH):
-                    smallMod = (i % (minShipSize + 1))
-                    if j % (minShipSize + 1) == smallMod:
-                        self.searchMat.append((i, j))
+            for j in xrange(i % 2, BOARD_WIDTH, 2):
+                self.searchMat.append((i, j))
 
         print self.searchMat
 
@@ -196,5 +199,6 @@ class Admiral(Player):
                     self.searchMat.remove(shot)
                 else:
                     shot = self.getRandomShot()
+                    assert False
         self.shots.add(shot)
         return shot
