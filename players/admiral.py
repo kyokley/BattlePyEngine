@@ -65,7 +65,7 @@ def normalize(shot):
     return x, y
 
 def getDistance(x, y):
-    dist = math.sqrt(x**2 + y**2) 
+    dist = math.sqrt(x**2 + y**2)
     return dist
 
 class Admiral(Player):
@@ -105,14 +105,24 @@ class Admiral(Player):
                                        maxPoint[1] - minPoint[1]))
 
             possibleLocations = []
-            for i in xrange(1, self.shipSizes[shipName] - len(hitLocations) + 1):
+            for i in xrange(1, self.shipSizes[shipName]):
                 possibleShot = (minPoint[0] - i * shipLine[0],
                                 minPoint[1] - i * shipLine[1])
                 if isValidPoint(possibleShot):
                     possibleLocations.append(possibleShot)
 
+                possibleShot = (minPoint[0] + i * shipLine[0],
+                                minPoint[1] + i * shipLine[1])
+                if isValidPoint(possibleShot):
+                    possibleLocations.append(possibleShot)
+
                 possibleShot = (maxPoint[0] + i * shipLine[0],
                                 maxPoint[1] + i * shipLine[1])
+                if isValidPoint(possibleShot):
+                    possibleLocations.append(possibleShot)
+
+                possibleShot = (maxPoint[0] - i * shipLine[0],
+                                maxPoint[1] - i * shipLine[1])
                 if isValidPoint(possibleShot):
                     possibleLocations.append(possibleShot)
 
