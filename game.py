@@ -13,7 +13,7 @@ class SystemException(Exception):
     pass
 
 class Game(object):
-    def __init__(self, player1, player2):
+    def __init__(self, player1, player2, debug=False):
         (self.player1,
          self.player2) = self.players = (player1, player2)
 
@@ -21,6 +21,7 @@ class Game(object):
         self.loser = None
 
         self.turns = None
+        self.debug = debug
 
     def playGame(self):
         try:
@@ -84,6 +85,9 @@ class Game(object):
                     done = defensivePlayer._checkAllShipsSunk()
                     if done:
                         # Game Over
+                        if self.debug:
+                            for player in self.players:
+                                player._getInfo()
                         self._gameOver(defensivePlayer, turns=count + 1)
                         break
             else:
@@ -91,6 +95,10 @@ class Game(object):
                     offensivePlayer.shotMissed(shot)
                 except Exception, e:
                     raise PlayerException(e, offensivePlayer)
+
+            if self.debug:
+                for player in self.players:
+                    player._getInfo()
 
     def _gameOver(self,
                   loser,

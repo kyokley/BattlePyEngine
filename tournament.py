@@ -1,7 +1,7 @@
 from game import Game
 
 class Tournament(object):
-    def __init__(self, player1, player2, numberOfGames, alternateFirstPlayer=True):
+    def __init__(self, player1, player2, numberOfGames, alternateFirstPlayer=True, debug=False):
         (self.player1,
          self.player2) = self.players = (player1, player2)
 
@@ -18,9 +18,9 @@ class Tournament(object):
         self.player2Wins = 0
 
         if alternateFirstPlayer:
-            self.games = [Game(self.players[i % 2], self.players[(i + 1) % 2]) for i in xrange(self.numberOfGames)]
+            self.games = [Game(self.players[i % 2], self.players[(i + 1) % 2], debug=debug) for i in xrange(self.numberOfGames)]
         else:
-            self.games = [Game(*self.players) for i in xrange(self.numberOfGames)]
+            self.games = [Game(*self.players, debug=debug) for i in xrange(self.numberOfGames)]
 
     @property
     def player1Losses(self):
