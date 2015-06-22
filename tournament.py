@@ -18,7 +18,7 @@ class Tournament(object):
         self.player2Wins = 0
 
         if alternateFirstPlayer:
-            self.games = [Game(self.players[i % 2], self.players[(i + 1) % 2]) for i in xrange(self.numberOfGames)]
+            self.games = [Game(self.players[i % 2], self.players[(i + 1) % 2], debug=debug) for i in xrange(self.numberOfGames)]
         else:
             self.games = [Game(*self.players, debug=debug) for i in xrange(self.numberOfGames)]
 
