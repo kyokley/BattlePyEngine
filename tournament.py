@@ -55,6 +55,8 @@ class Tournament(object):
                 self.player2Wins += 1
                 print 'Player 2 (%s) Wins!' % self.player2Alias
 
+            print 'Number of turns: %s' % game.turns
+
     def printStats(self):
         print 'Games played: %s' % self.numberOfGames
         print 'Player1 (%s) wins: %s' % (self.player1Alias, self.player1Wins)
