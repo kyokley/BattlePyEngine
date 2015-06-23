@@ -1,6 +1,3 @@
-from config import (BOARD_WIDTH,
-                    BOARD_HEIGHT,
-                    )
 (UP,
  DOWN,
  LEFT,
@@ -11,11 +8,12 @@ VECTOR_DICT = {UP: (0, 1),
                RIGHT: (1, 0)}
 
 class Ship(object):
-    def __init__(self, name, size):
+    def __init__(self, name, size, game):
         self.name = name
         self.size = size
         self.hits = set()
         self.locations = set()
+        self.game = game
 
     def placeShip(self, location, orientation):
         self.locations = set()
@@ -29,17 +27,7 @@ class Ship(object):
             self.locations.add(newLocation)
 
     def isPlacementValid(self):
-        if not self.locations:
-            return False
-
-        for location in self.locations:
-            if (location[0] < 0 or
-                location[0] >= BOARD_WIDTH or
-                location[1] < 0 or
-                location[1] >= BOARD_HEIGHT):
-                return False
-
-        return True
+        return self.game.isValidShipPlacement(self)
 
     def addHit(self, location):
         if location not in self.locations:

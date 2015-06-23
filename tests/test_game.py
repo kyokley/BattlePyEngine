@@ -1,12 +1,13 @@
 import unittest, mock
 from game import Game, PlayerException
+from config import DEFAULT_SHIPS
 
 class TestPlayGame(unittest.TestCase):
     def setUp(self):
         self.player1 = mock.MagicMock()
         self.player2 = mock.MagicMock()
 
-        self.game = Game(self.player1, self.player2)
+        self.game = Game(self.player1, self.player2, shipSpecs=DEFAULT_SHIPS)
         self.game._placeShips = mock.MagicMock()
         self.game._takeTurns = mock.MagicMock()
         self.game._gameOver = mock.MagicMock()

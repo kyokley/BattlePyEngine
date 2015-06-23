@@ -1,10 +1,9 @@
-from config import DEFAULT_SHIPS
+from config import (DEFAULT_SHIPS,
+                    BOARD_WIDTH,
+                    BOARD_HEIGHT,
+                    )
+                   
 from ship import Ship
-
-def createShips(specs=None):
-    if not specs:
-        specs = DEFAULT_SHIPS
-    return [Ship(*x) for x in specs]
 
 class PlayerException(Exception):
     pass
@@ -13,7 +12,13 @@ class SystemException(Exception):
     pass
 
 class Game(object):
-    def __init__(self, player1, player2, debug=False):
+    def __init__(self,
+                 player1,
+                 player2,
+                 debug=False,
+                 shipSpecs=None,
+                 boardWidth=None,
+                 boardHeight=None):
         (self.player1,
          self.player2) = self.players = (player1, player2)
 
@@ -22,11 +27,19 @@ class Game(object):
 
         self.turns = None
         self.debug = debug
+        self.shipSpecs = shipSpecs
+
+        self.boardWidth = boardWidth or BOARD_WIDTH
+        self.boardHeight = boardHeight or BOARD_HEIGHT
+
+    def createShips(self):
+        specs = self.shipSpecs or DEFAULT_SHIPS
+        return [Ship(*x, game=self) for x in specs]
 
     def playGame(self):
         try:
             for player in self.players:
-                player._setShips(createShips())
+                player._setShips(self.createShips())
                 player.newGame()
 
             # Step 1
@@ -112,3 +125,17 @@ class Game(object):
         self.winner.gameWon()
         self.loser.gameLost()
         return self.winner, self.loser
+
+    def isValidShipPlacement(self, ship):
+        if not ship.locations:
+            return False
+
+        for location in ship.locations:
+            if (location[0] < 0 or
+                location[0] >= self.boardWidth or
+                location[1] < 0 or
+                location[1] >= self.boardHeight):
+                return False
+
+        return True
+

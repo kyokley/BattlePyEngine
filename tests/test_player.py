@@ -1,14 +1,21 @@
-import unittest
+import unittest, mock
 from ship import Ship
 from players.player import Player
 from ship import DOWN, RIGHT
+from config import (BOARD_WIDTH,
+                    BOARD_HEIGHT)
+from game import Game
 
 class TestShipsPlacedLegally(unittest.TestCase):
     def setUp(self):
         self.testPlayer = Player()
-        self.ship1 = Ship('ship1', 3)
-        self.ship2 = Ship('ship2', 4)
-        self.ship3 = Ship('ship3', 2)
+        self.mockPlayer = mock.MagicMock()
+        self.game = Game(self.testPlayer, self.mockPlayer)
+        self.game.boardWidth = BOARD_WIDTH
+        self.game.boardHeight = BOARD_HEIGHT
+        self.ship1 = Ship('ship1', 3, self.game)
+        self.ship2 = Ship('ship2', 4, self.game)
+        self.ship3 = Ship('ship3', 2, self.game)
         self.testPlayer._setShips([self.ship1,
                                    self.ship2,
                                    self.ship3,
@@ -54,9 +61,13 @@ class TestShipsPlacedLegally(unittest.TestCase):
 class TestCheckIsHit(unittest.TestCase):
     def setUp(self):
         self.testPlayer = Player()
-        self.ship1 = Ship('ship1', 3)
-        self.ship2 = Ship('ship2', 4)
-        self.ship3 = Ship('ship3', 2)
+        self.mockPlayer = mock.MagicMock()
+        self.game = Game(self.testPlayer, self.mockPlayer)
+        self.game.boardWidth = BOARD_WIDTH
+        self.game.boardHeight = BOARD_HEIGHT
+        self.ship1 = Ship('ship1', 3, self.game)
+        self.ship2 = Ship('ship2', 4, self.game)
+        self.ship3 = Ship('ship3', 2, self.game)
         self.testPlayer._setShips([self.ship1,
                                    self.ship2,
                                    self.ship3,
@@ -82,9 +93,13 @@ class TestCheckIsHit(unittest.TestCase):
 class TestCheckAllShipsSunk(unittest.TestCase):
     def setUp(self):
         self.testPlayer = Player()
-        self.ship1 = Ship('ship1', 3)
-        self.ship2 = Ship('ship2', 4)
-        self.ship3 = Ship('ship3', 2)
+        self.mockPlayer = mock.MagicMock()
+        self.game = Game(self.testPlayer, self.mockPlayer)
+        self.game.boardWidth = BOARD_WIDTH
+        self.game.boardHeight = BOARD_HEIGHT
+        self.ship1 = Ship('ship1', 3, self.game)
+        self.ship2 = Ship('ship2', 4, self.game)
+        self.ship3 = Ship('ship3', 2, self.game)
         self.testPlayer._setShips([self.ship1,
                                    self.ship2,
                                    self.ship3,

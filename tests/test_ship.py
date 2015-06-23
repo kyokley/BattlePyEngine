@@ -1,14 +1,16 @@
-import unittest
+import unittest, mock
 from ship import (Ship,
                   UP,
                   DOWN,
                   LEFT,
                   RIGHT,
                   )
+from game import Game
 
 class TestPlaceShip(unittest.TestCase):
     def setUp(self):
-        self.testShip = Ship('testShip1', 3)
+        self.game = Game(mock.MagicMock(), mock.MagicMock())
+        self.testShip = Ship('testShip1', 3, self.game)
 
     def test_placeShipUp(self):
         self.testShip.placeShip((0, 0), UP)
@@ -40,7 +42,8 @@ class TestPlaceShip(unittest.TestCase):
 
 class TestIsPlacementValid(unittest.TestCase):
     def setUp(self):
-        self.testShip = Ship('testShip1', 3)
+        self.game = Game(mock.MagicMock(), mock.MagicMock())
+        self.testShip = Ship('testShip1', 3, self.game)
 
     def test_isPlacementValid(self):
         self.testShip.placeShip((0, 1), DOWN)
@@ -63,7 +66,8 @@ class TestIsPlacementValid(unittest.TestCase):
 
 class TestAddHit(unittest.TestCase):
     def setUp(self):
-        self.testShip = Ship('testShip1', 3)
+        self.game = Game(mock.MagicMock(), mock.MagicMock())
+        self.testShip = Ship('testShip1', 3, self.game)
 
     def test_notAHit(self):
         self.testShip.placeShip((5, 5), UP)
@@ -81,7 +85,8 @@ class TestAddHit(unittest.TestCase):
 
 class TestIsSunk(unittest.TestCase):
     def setUp(self):
-        self.testShip = Ship('testShip1', 3)
+        self.game = Game(mock.MagicMock(), mock.MagicMock())
+        self.testShip = Ship('testShip1', 3, self.game)
         self.testShip.placeShip((5, 5), UP)
 
     def test_notSunk(self):
