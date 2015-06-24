@@ -1,7 +1,7 @@
-from tournament import Tournament
-from players.random_player import RandomPlayer
-from players.improved_random_player import ImprovedRandomPlayer
-from custom.admiral import Admiral
+from battlePy.tournament import Tournament
+from battlePy.players.random_player import RandomPlayer
+from battlePy.players.improved_random_player import ImprovedRandomPlayer
+from battlePy.custom.admiral import Admiral
 
 def main():
     tournament = Tournament(Admiral(), ImprovedRandomPlayer(), 100)

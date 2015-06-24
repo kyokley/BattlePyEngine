@@ -1,9 +1,9 @@
-from config import (DEFAULT_SHIPS,
+from battlePy.config import (DEFAULT_SHIPS,
                     BOARD_WIDTH,
                     BOARD_HEIGHT,
                     )
                    
-from ship import Ship
+from battlePy.ship import Ship
 
 class PlayerException(Exception):
     pass

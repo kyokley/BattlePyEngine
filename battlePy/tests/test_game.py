@@ -1,6 +1,6 @@
 import unittest, mock
-from game import Game, PlayerException
-from config import DEFAULT_SHIPS
+from battlePy.game import Game, PlayerException
+from battlePy.config import DEFAULT_SHIPS
 
 class TestPlayGame(unittest.TestCase):
     def setUp(self):

@@ -14,5 +14,6 @@ setup(name='BattlePy',
       license='MIT',
       packages=['battlePy'],
       test_suite='nose.collector',
-      tests_require=['nose'],
+      tests_require=['nose',
+                     'mock',],
       zip_safe=False)

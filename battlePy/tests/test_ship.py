@@ -1,11 +1,11 @@
 import unittest, mock
-from ship import (Ship,
+from battlePy.ship import (Ship,
                   UP,
                   DOWN,
                   LEFT,
                   RIGHT,
                   )
-from game import Game
+from battlePy.game import Game
 
 class TestPlaceShip(unittest.TestCase):
     def setUp(self):
