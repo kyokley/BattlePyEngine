@@ -1,7 +1,7 @@
 from battlePy.config import (DEFAULT_SHIPS,
-                    BOARD_WIDTH,
-                    BOARD_HEIGHT,
-                    )
+                             BOARD_WIDTH,
+                             BOARD_HEIGHT,
+                             )
                    
 from battlePy.ship import Ship
 
@@ -27,18 +27,18 @@ class Game(object):
 
         self.turns = None
         self.debug = debug
-        self.shipSpecs = shipSpecs
+        self.shipSpecs = shipSpecs or DEFAULT_SHIPS
 
         self.boardWidth = boardWidth or BOARD_WIDTH
         self.boardHeight = boardHeight or BOARD_HEIGHT
 
     def createShips(self):
-        specs = self.shipSpecs or DEFAULT_SHIPS
-        return [Ship(*x, game=self) for x in specs]
+        return [Ship(*x, game=self) for x in self.shipSpecs]
 
     def playGame(self):
         try:
             for player in self.players:
+                player.currentGame = self
                 player._setShips(self.createShips())
                 player.newGame()
 
