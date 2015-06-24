@@ -39,9 +39,9 @@ class Game(object):
     def playGame(self):
         try:
             for player in self.players:
+                player.currentGame = self
                 player._setShips(self.createShips())
                 player.newGame()
-                player.currentGame = self
 
             # Step 1
             # Place ships for both players
