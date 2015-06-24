@@ -1,7 +1,7 @@
 from battlePy.config import (DEFAULT_SHIPS,
-                    BOARD_WIDTH,
-                    BOARD_HEIGHT,
-                    )
+                             BOARD_WIDTH,
+                             BOARD_HEIGHT,
+                             )
                    
 from battlePy.ship import Ship
 
@@ -41,6 +41,7 @@ class Game(object):
             for player in self.players:
                 player._setShips(self.createShips())
                 player.newGame()
+                player.currentGame = self
 
             # Step 1
             # Place ships for both players
