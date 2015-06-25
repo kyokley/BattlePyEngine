@@ -1,7 +1,7 @@
 class Player(object):
-    def __init__(self, name='player'):
+    def __init__(self):
         self.ships = None
-        self.name = name
+        self.name = self.__class__.__name__
         self.initPlayer()
 
     def initPlayer(self):
