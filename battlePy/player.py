@@ -1,7 +1,14 @@
+from battlePy.utils import docprop
+
 class Player(object):
+    ships = docprop('ships', "List of this player's ship objects")
+    name = docprop('name', 'Player name')
+    currentGame = docprop('currentGame', 'Game that is currently being played')
+
     def __init__(self):
         self.ships = None
         self.name = self.__class__.__name__
+        self.currentGame = None
         self.initPlayer()
 
     def initPlayer(self):
