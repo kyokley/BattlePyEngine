@@ -2,8 +2,8 @@ from battlePy.default_config import (DEFAULT_SHIPS,
                                      BOARD_WIDTH,
                                      BOARD_HEIGHT,
                                      )
-                   
 from battlePy.ship import Ship
+from battlePy.utils import docprop
 
 class PlayerException(Exception):
     pass
@@ -12,6 +12,16 @@ class SystemException(Exception):
     pass
 
 class Game(object):
+    player1 = docprop('player1', 'First player')
+    player2 = docprop('player2', 'Second player')
+    winner = docprop('winner', 'Winner of the game')
+    loser = docprop('loser', 'Loser of the game')
+    turns = docprop('turns', 'Total number of turns taken by both players')
+    debug = docprop('debug', 'Is debugging mode?')
+    shipSpecs = docprop('shipSpecs', 'List of tuples containing pairs of ship names and sizes')
+    boardWidth = docprop('boardWidth', 'Game board width')
+    boardHeight = docprop('boardHeight', 'Game board height')
+
     def __init__(self,
                  player1,
                  player2,
