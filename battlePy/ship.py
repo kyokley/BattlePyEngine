@@ -1,3 +1,5 @@
+from utils import docprop
+
 (UP,
  DOWN,
  LEFT,
@@ -8,6 +10,12 @@ VECTOR_DICT = {UP: (0, 1),
                RIGHT: (1, 0)}
 
 class Ship(object):
+    name = docprop('name', 'Name of the ship')
+    size = docprop('size', 'Size of the ship')
+    hits = docprop('hits', 'Set of current hit locations')
+    locations = docprop('locations', 'Set of ship coordinates')
+    game = docprop('game', 'The game this Ship belongs to')
+
     def __init__(self, name, size, game):
         self.name = name
         self.size = size
