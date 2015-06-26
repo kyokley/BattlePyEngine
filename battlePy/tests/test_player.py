@@ -2,8 +2,8 @@ import unittest, mock
 from battlePy.ship import Ship
 from battlePy.player import Player
 from battlePy.ship import DOWN, RIGHT
-from battlePy.config import (BOARD_WIDTH,
-                    BOARD_HEIGHT)
+from battlePy.default_config import (BOARD_WIDTH,
+                                     BOARD_HEIGHT)
 from battlePy.game import Game
 
 class TestShipsPlacedLegally(unittest.TestCase):

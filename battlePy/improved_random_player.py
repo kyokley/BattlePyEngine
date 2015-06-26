@@ -1,7 +1,7 @@
-from player import Player
-from config import (BOARD_WIDTH,
-                    BOARD_HEIGHT)
-from ship import UP, RIGHT
+from battlePy.player import Player
+from battlePy.default_config import (BOARD_WIDTH,
+                                     BOARD_HEIGHT)
+from battlePy.ship import UP, RIGHT
 import random
 
 class ImprovedRandomPlayer(Player):

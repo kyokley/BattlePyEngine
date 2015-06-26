@@ -1,7 +1,7 @@
-from battlePy.config import (DEFAULT_SHIPS,
-                             BOARD_WIDTH,
-                             BOARD_HEIGHT,
-                             )
+from battlePy.default_config import (DEFAULT_SHIPS,
+                                     BOARD_WIDTH,
+                                     BOARD_HEIGHT,
+                                     )
                    
 from battlePy.ship import Ship
 
