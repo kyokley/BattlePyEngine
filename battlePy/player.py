@@ -12,12 +12,15 @@ class Player(object):
         self.initPlayer()
 
     def initPlayer(self):
+        ''' Initialize this player '''
         pass
 
     def placeShips(self):
+        ''' Determine where ships should be placed and place them on the game board '''
         raise NotImplementedError()
 
     def isShipPlacedLegally(self, refShip):
+        ''' Determine if a ship has been placed legally '''
         if not refShip.isPlacementValid():
             return False
 
@@ -32,15 +35,36 @@ class Player(object):
         return True
 
     def shotHit(self, shot, shipName):
+        ''' Method called when a ship is hit
+
+        Args:
+            shot (tuple): x, y pair of the shot location
+            shipName (string): Name of the ship that was hit
+        '''
         pass
 
     def shotMissed(self, shot):
+        ''' Method called when a shot misses
+
+        Args:
+            shot (tuple): x, y pair of the shot location
+        '''
         pass
 
     def shipSunk(self, shipName):
+        ''' Method called when a ship is sunk
+
+        Args:
+            shipName (string): Name of the ship that was hit
+        '''
         pass
 
     def fireShot(self):
+        ''' Get an x, y coordinate pair for a shot location
+
+        Yields:
+            tuple: x, y coordinate pair
+        '''
         raise NotImplementedError()
 
     def gameWon(self):

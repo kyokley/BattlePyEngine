@@ -43,9 +43,11 @@ class Game(object):
         self.boardHeight = boardHeight or BOARD_HEIGHT
 
     def createShips(self):
+        ''' Generate a list of ship objects based on the given ship specifications '''
         return [Ship(*x, game=self) for x in self.shipSpecs]
 
     def playGame(self):
+        ''' Start the game '''
         try:
             for player in self.players:
                 player.currentGame = self
@@ -137,6 +139,7 @@ class Game(object):
         return self.winner, self.loser
 
     def isValidShipPlacement(self, ship):
+        ''' Is ship placement valid for this game board? '''
         if not ship.locations:
             return False
 
@@ -148,4 +151,3 @@ class Game(object):
                 return False
 
         return True
-
