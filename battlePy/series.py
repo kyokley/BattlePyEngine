@@ -1,6 +1,6 @@
 from game import Game
 
-class Tournament(object):
+class Series(object):
     def __init__(self,
                  player1,
                  player2,
