@@ -5,7 +5,7 @@ def readme():
         return f.read()
 
 setup(name='BattlePy',
-      version='0.3',
+      version='0.3.1',
       description='Battleship AI Engine',
       long_description=readme(),
       url='http://github.com/kyokley/BattlePy',

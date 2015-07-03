@@ -50,12 +50,8 @@ class Series(object):
 
             if winner == self.player1:
                 self.player1Wins += 1
-                print 'Player 1 (%s) Wins!' % self.player1Alias
             else:
                 self.player2Wins += 1
-                print 'Player 2 (%s) Wins!' % self.player2Alias
-
-            print 'Number of turns: %s' % game.turns
 
     def printStats(self):
         print 'Games played: %s' % self.numberOfGames

@@ -1,5 +1,6 @@
 from battlePy.utils import docprop
 from datetime import datetime
+from blessings import Terminal
 
 class GameClockViolationException(Exception):
     pass
@@ -149,7 +150,6 @@ class Player(object):
     def _shotMissed(self, shot):
         return self.shotMissed(shot)
 
-
     @_gameClockTimedMethod
     def _shipSunk(self, shipName):
         return self.shipSunk(shipName)
@@ -158,11 +158,10 @@ class Player(object):
     def _fireShot(self):
         return self.fireShot()
 
-    @_gameClockTimedMethod
     def _gameWon(self):
+        self.printBoard()
         return self.gameWon()
 
-    @_gameClockTimedMethod
     def _gameLost(self):
         return self.gameLost()
 
@@ -174,3 +173,22 @@ class Player(object):
     @_gameClockTimedMethod
     def _opponentShot(self, shot):
         return self.opponentShot(shot)
+
+    def printBoard(self):
+        term = Terminal()
+        print term.clear
+
+        with term.location():
+            for ship in self.ships:
+                for location in ship.locations:
+                    x, y = location
+                    print term.move(x + 1, y + 1) + term.red('O')
+
+            for i in xrange(self.currentGame.boardHeight + 2):
+                print term.move(0, i) + '-'
+                print term.move(self.currentGame.boardWidth + 2, i) + '-'
+
+            for i in xrange(self.currentGame.boardWidth + 2):
+                print term.move(i, 0) + '|'
+                print term.move(i, self.currentGame.boardHeight + 2) + '|'
+
