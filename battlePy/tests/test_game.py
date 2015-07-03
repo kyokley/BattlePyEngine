@@ -15,8 +15,8 @@ class TestPlayGame(unittest.TestCase):
     def test_playGame(self):
         self.game.playGame()
 
-        self.assertTrue(self.player1.newGame.called)
-        self.assertTrue(self.player2.newGame.called)
+        self.assertTrue(self.player1._newGame.called)
+        self.assertTrue(self.player2._newGame.called)
 
         self.assertTrue(self.game._placeShips.called)
         self.assertTrue(self.game._takeTurns.called)
@@ -34,8 +34,8 @@ class TestPlaceShips(unittest.TestCase):
 
         self.game._placeShips()
 
-        self.assertTrue(self.player1.placeShips.called)
-        self.assertTrue(self.player2.placeShips.called)
+        self.assertTrue(self.player1._placeShips.called)
+        self.assertTrue(self.player2._placeShips.called)
 
         self.assertTrue(self.player1._allShipsPlacedLegally.called)
         self.assertTrue(self.player2._allShipsPlacedLegally.called)
@@ -49,8 +49,8 @@ class TestPlaceShips(unittest.TestCase):
         except Exception, e:
             exception = e
 
-        self.assertTrue(self.player1.placeShips.called)
-        self.assertTrue(self.player2.placeShips.called)
+        self.assertTrue(self.player1._placeShips.called)
+        self.assertTrue(self.player2._placeShips.called)
 
         self.assertTrue(self.player1._allShipsPlacedLegally.called)
         self.assertTrue(self.player2._allShipsPlacedLegally.called)
