@@ -1,6 +1,9 @@
 from battlePy.utils import docprop
 from datetime import datetime
 
+class GameClockViolationException(Exception):
+    pass
+
 def _gameClockTimedMethod(func):
     def func_wrapper(cls, *args, **kwargs):
         t0 = datetime.now()
@@ -10,7 +13,7 @@ def _gameClockTimedMethod(func):
         cls._gameTime += timediff.total_seconds() * 1000000
         if not cls.currentGame.debug:
             if cls._gameTime > cls.currentGame.timeoutLength:
-                raise Exception("Player has gone over allotted time.")
+                raise GameClockViolationException("Player has gone over allotted time.")
         return res
     return func_wrapper
 
@@ -23,6 +26,7 @@ class Player(object):
         self.ships = None
         self.name = self.__class__.__name__
         self.currentGame = None
+        self._gameTime = 0
         self.initPlayer()
 
     def initPlayer(self):
@@ -153,7 +157,6 @@ class Player(object):
     @_gameClockTimedMethod
     def _fireShot(self):
         return self.fireShot()
-
 
     @_gameClockTimedMethod
     def _gameWon(self):
