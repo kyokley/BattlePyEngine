@@ -57,7 +57,11 @@ class Game(object):
             for player in self.players:
                 player.currentGame = self
                 player._setShips(self.createShips())
-                player.newGame()
+
+                try:
+                    player._newGame()
+                except Exception, e:
+                    raise PlayerException(e, player)
 
             # Step 1
             # Place ships for both players
@@ -74,7 +78,7 @@ class Game(object):
         for player in self.players:
                 for i in xrange(100):
                     try:
-                        player.placeShips()
+                        player._placeShips()
                     except Exception, e:
                         print e
                         raise PlayerException(e, player)
@@ -93,31 +97,27 @@ class Game(object):
             defensivePlayer = self.players[(count + 1) % 2]
 
             try:
-                t0 = datetime.now()
-                shot = offensivePlayer.fireShot()
-                t1 = datetime.now()
-
-                if not self.debug:
-                    timediff = t1 - t0
-                    offensivePlayer._gameTime += timediff.total_seconds() * 1000000
-                    if offensivePlayer._gameTime > self.timeoutLength:
-                        raise Exception("Player has gone over allotted time.")
+                shot = offensivePlayer._fireShot()
             except Exception, e:
                 raise PlayerException(e, offensivePlayer)
 
             hit, hitShip = defensivePlayer._checkIsHit(shot)
-            defensivePlayer.opponentShot(shot)
+
+            try:
+                defensivePlayer._opponentShot(shot)
+            except Exception, e:
+                raise PlayerException(e, defensivePlayer)
 
             if hit:
                 try:
-                    offensivePlayer.shotHit(shot, hitShip.name)
+                    offensivePlayer._shotHit(shot, hitShip.name)
                 except Exception, e:
                     raise PlayerException(e, offensivePlayer)
 
 
                 if hitShip.isSunk():
                     try:
-                        offensivePlayer.shipSunk(hitShip.name)
+                        offensivePlayer._shipSunk(hitShip.name)
                     except Exception, e:
                         raise PlayerException(e, offensivePlayer)
                     done = defensivePlayer._checkAllShipsSunk()
@@ -130,7 +130,7 @@ class Game(object):
                         break
             else:
                 try:
-                    offensivePlayer.shotMissed(shot)
+                    offensivePlayer._shotMissed(shot)
                 except Exception, e:
                     raise PlayerException(e, offensivePlayer)
 
