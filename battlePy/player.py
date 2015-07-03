@@ -29,10 +29,6 @@ class Player(object):
         ''' Initialize this player '''
         pass
 
-    @_gameClockTimedMethod
-    def _placeShips(self):
-        return self.placeShips()
-
     def placeShips(self):
         ''' Determine where ships should be placed and place them on the game board '''
         raise NotImplementedError()
@@ -52,10 +48,6 @@ class Player(object):
 
         return True
 
-    @_gameClockTimedMethod
-    def _shotHit(self, shot, shipName):
-        return self.shotHit(shot, shipName)
-
     def shotHit(self, shot, shipName):
         ''' Method called when a ship is hit
 
@@ -65,10 +57,6 @@ class Player(object):
         '''
         pass
 
-    @_gameClockTimedMethod
-    def _shotMissed(self, shot):
-        return self.shotMissed(shot)
-
     def shotMissed(self, shot):
         ''' Method called when a shot misses
 
@@ -76,10 +64,6 @@ class Player(object):
             shot (tuple): x, y pair of the shot location
         '''
         pass
-
-    @_gameClockTimedMethod
-    def _shipSunk(self, shipName):
-        return self.shipSunk(shipName)
 
     def shipSunk(self, shipName):
         ''' Method called when a ship is sunk
@@ -89,10 +73,6 @@ class Player(object):
         '''
         pass
 
-    @_gameClockTimedMethod
-    def _fireShot(self):
-        return self.fireShot()
-
     def fireShot(self):
         ''' Get an x, y coordinate pair for a shot location
 
@@ -101,31 +81,15 @@ class Player(object):
         '''
         raise NotImplementedError()
 
-    @_gameClockTimedMethod
-    def _gameWon(self):
-        return self.gameWon()
-
     def gameWon(self):
         pass
 
-    @_gameClockTimedMethod
-    def _gameLost(self):
-        return self.gameLost()
 
     def gameLost(self):
         pass
 
-    @_gameClockTimedMethod
-    def _newGame(self):
-        self._gameTime = 0
-        return self.newGame()
-
     def newGame(self):
         pass
-
-    @_gameClockTimedMethod
-    def _opponentShot(self, shot):
-        return self.opponentShot(shot)
 
     def opponentShot(self, shot):
         pass
@@ -169,3 +133,41 @@ class Player(object):
         for ship in self.ships:
             print '%s: %s Hits: %s' % (ship.name, sorted(list(ship.locations)), sorted(list(ship.hits)))
 
+    @_gameClockTimedMethod
+    def _placeShips(self):
+        return self.placeShips()
+
+    @_gameClockTimedMethod
+    def _shotHit(self, shot, shipName):
+        return self.shotHit(shot, shipName)
+
+    @_gameClockTimedMethod
+    def _shotMissed(self, shot):
+        return self.shotMissed(shot)
+
+
+    @_gameClockTimedMethod
+    def _shipSunk(self, shipName):
+        return self.shipSunk(shipName)
+
+    @_gameClockTimedMethod
+    def _fireShot(self):
+        return self.fireShot()
+
+
+    @_gameClockTimedMethod
+    def _gameWon(self):
+        return self.gameWon()
+
+    @_gameClockTimedMethod
+    def _gameLost(self):
+        return self.gameLost()
+
+    @_gameClockTimedMethod
+    def _newGame(self):
+        self._gameTime = 0
+        return self.newGame()
+
+    @_gameClockTimedMethod
+    def _opponentShot(self, shot):
+        return self.opponentShot(shot)
