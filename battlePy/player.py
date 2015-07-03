@@ -1,4 +1,5 @@
 from battlePy.utils import docprop
+from datetime import datetime
 
 class Player(object):
     ships = docprop('ships', "List of this player's ship objects")
@@ -9,6 +10,7 @@ class Player(object):
         self.ships = None
         self.name = self.__class__.__name__
         self.currentGame = None
+        self._gameTime = 0
         self.initPlayer()
 
     def initPlayer(self):
@@ -117,3 +119,7 @@ class Player(object):
         print 'Ship Locations'
         for ship in self.ships:
             print '%s: %s Hits: %s' % (ship.name, sorted(list(ship.locations)), sorted(list(ship.hits)))
+
+    def _timedMethod(self, func):
+        #def func_wrapper(
+        pass

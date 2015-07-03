@@ -1,6 +1,8 @@
+from datetime import datetime
 from battlePy.default_config import (DEFAULT_SHIPS,
                                      BOARD_WIDTH,
                                      BOARD_HEIGHT,
+                                     TIMEOUT_LENGTH,
                                      )
 from battlePy.ship import Ship
 from battlePy.utils import docprop
@@ -28,7 +30,8 @@ class Game(object):
                  debug=False,
                  shipSpecs=None,
                  boardWidth=None,
-                 boardHeight=None):
+                 boardHeight=None,
+                 timeoutLength=None):
         (self.player1,
          self.player2) = self.players = (player1, player2)
 
@@ -41,6 +44,8 @@ class Game(object):
 
         self.boardWidth = boardWidth or BOARD_WIDTH
         self.boardHeight = boardHeight or BOARD_HEIGHT
+
+        self.timeoutLength = timeoutLength or TIMEOUT_LENGTH
 
     def createShips(self):
         ''' Generate a list of ship objects based on the given ship specifications '''
@@ -88,7 +93,15 @@ class Game(object):
             defensivePlayer = self.players[(count + 1) % 2]
 
             try:
+                t0 = datetime.now()
                 shot = offensivePlayer.fireShot()
+                t1 = datetime.now()
+
+                if not self.debug:
+                    timediff = t1 - t0
+                    offensivePlayer._gameTime += timediff.total_seconds() * 1000000
+                    if offensivePlayer._gameTime > self.timeoutLength:
+                        raise Exception("Player has gone over allotted time.")
             except Exception, e:
                 raise PlayerException(e, offensivePlayer)
 
