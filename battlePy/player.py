@@ -1,6 +1,22 @@
 from battlePy.utils import docprop
 from datetime import datetime
 
+class GameClockViolationException(Exception):
+    pass
+
+def _gameClockTimedMethod(func):
+    def func_wrapper(cls, *args, **kwargs):
+        t0 = datetime.now()
+        res = func(cls, *args, **kwargs)
+        t1 = datetime.now()
+        timediff = t1 - t0
+        cls._gameTime += timediff.total_seconds() * 1000000
+        if not cls.currentGame.debug:
+            if cls._gameTime > cls.currentGame.timeoutLength:
+                raise GameClockViolationException("Player has gone over allotted time.")
+        return res
+    return func_wrapper
+
 class Player(object):
     ships = docprop('ships', "List of this player's ship objects")
     name = docprop('name', 'Player name')
@@ -72,6 +88,7 @@ class Player(object):
     def gameWon(self):
         pass
 
+
     def gameLost(self):
         pass
 
@@ -120,6 +137,40 @@ class Player(object):
         for ship in self.ships:
             print '%s: %s Hits: %s' % (ship.name, sorted(list(ship.locations)), sorted(list(ship.hits)))
 
-    def _timedMethod(self, func):
-        #def func_wrapper(
-        pass
+    @_gameClockTimedMethod
+    def _placeShips(self):
+        return self.placeShips()
+
+    @_gameClockTimedMethod
+    def _shotHit(self, shot, shipName):
+        return self.shotHit(shot, shipName)
+
+    @_gameClockTimedMethod
+    def _shotMissed(self, shot):
+        return self.shotMissed(shot)
+
+
+    @_gameClockTimedMethod
+    def _shipSunk(self, shipName):
+        return self.shipSunk(shipName)
+
+    @_gameClockTimedMethod
+    def _fireShot(self):
+        return self.fireShot()
+
+    @_gameClockTimedMethod
+    def _gameWon(self):
+        return self.gameWon()
+
+    @_gameClockTimedMethod
+    def _gameLost(self):
+        return self.gameLost()
+
+    @_gameClockTimedMethod
+    def _newGame(self):
+        self._gameTime = 0
+        return self.newGame()
+
+    @_gameClockTimedMethod
+    def _opponentShot(self, shot):
+        return self.opponentShot(shot)
