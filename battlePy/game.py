@@ -1,4 +1,3 @@
-from datetime import datetime
 from battlePy.default_config import (DEFAULT_SHIPS,
                                      BOARD_WIDTH,
                                      BOARD_HEIGHT,
@@ -6,6 +5,7 @@ from battlePy.default_config import (DEFAULT_SHIPS,
                                      )
 from battlePy.ship import Ship
 from battlePy.utils import docprop
+from blessings import Terminal
 
 class PlayerException(Exception):
     pass
@@ -53,6 +53,8 @@ class Game(object):
 
     def playGame(self):
         ''' Start the game '''
+        term = Terminal()
+        print term.clear
         try:
             for player in self.players:
                 player.currentGame = self
@@ -134,9 +136,8 @@ class Game(object):
                 except Exception, e:
                     raise PlayerException(e, offensivePlayer)
 
-            if self.debug:
-                for player in self.players:
-                    player._getInfo()
+            self.player1.printBoard()
+            self.player2.printBoard(hOffset=20)
 
     def _gameOver(self,
                   loser,

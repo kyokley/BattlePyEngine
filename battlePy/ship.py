@@ -22,6 +22,7 @@ class Ship(object):
         self.hits = set()
         self.locations = set()
         self.game = game
+        self.symbol = self.name[0]
 
     def placeShip(self, location, orientation):
         self.locations = set()

@@ -1,4 +1,5 @@
 from game import Game
+from blessings import Terminal
 
 class Series(object):
     def __init__(self,
@@ -52,6 +53,8 @@ class Series(object):
                 self.player1Wins += 1
             else:
                 self.player2Wins += 1
+
+            self.printStats()
 
     def printStats(self):
         print 'Games played: %s' % self.numberOfGames
