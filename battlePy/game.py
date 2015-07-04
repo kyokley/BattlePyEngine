@@ -147,8 +147,8 @@ class Game(object):
         self.turns = turns
         self.exception = exception
 
-        self.winner.gameWon()
-        self.loser.gameLost()
+        self.winner._gameWon()
+        self.loser._gameLost()
         return self.winner, self.loser
 
     def isValidShipPlacement(self, ship):
