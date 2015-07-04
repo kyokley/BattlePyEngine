@@ -5,7 +5,7 @@ from battlePy.default_config import (DEFAULT_SHIPS,
                                      )
 from battlePy.ship import Ship
 from battlePy.utils import docprop
-from blessings import Terminal
+from time import sleep
 
 class PlayerException(Exception):
     pass
@@ -31,7 +31,9 @@ class Game(object):
                  shipSpecs=None,
                  boardWidth=None,
                  boardHeight=None,
-                 timeoutLength=None):
+                 timeoutLength=None,
+                 showVisualization=False,
+                 visualizationInterval=.01):
         (self.player1,
          self.player2) = self.players = (player1, player2)
 
@@ -47,14 +49,15 @@ class Game(object):
 
         self.timeoutLength = timeoutLength or TIMEOUT_LENGTH
 
+        self.showVisualization = showVisualization
+        self.visualizationInterval = visualizationInterval
+
     def createShips(self):
         ''' Generate a list of ship objects based on the given ship specifications '''
         return [Ship(*x, game=self) for x in self.shipSpecs]
 
     def playGame(self):
         ''' Start the game '''
-        term = Terminal()
-        print term.clear
         try:
             for player in self.players:
                 player.currentGame = self
@@ -68,6 +71,11 @@ class Game(object):
             # Step 1
             # Place ships for both players
             self._placeShips()
+
+            if self.showVisualization:
+                for player in self.players:
+                    player._initializeGameBoard()
+                    player._displayShips()
 
             # Step 2
             # Take turns blowing ships out of the water
@@ -93,6 +101,8 @@ class Game(object):
     def _takeTurns(self):
         count = -1
         while True:
+            if self.showVisualization:
+                sleep(self.visualizationInterval)
             count += 1
 
             offensivePlayer = self.players[count % 2]
@@ -125,9 +135,6 @@ class Game(object):
                     done = defensivePlayer._checkAllShipsSunk()
                     if done:
                         # Game Over
-                        if self.debug:
-                            for player in self.players:
-                                player._getInfo()
                         self._gameOver(defensivePlayer, turns=count + 1)
                         break
             else:
@@ -135,9 +142,6 @@ class Game(object):
                     offensivePlayer._shotMissed(shot)
                 except Exception, e:
                     raise PlayerException(e, offensivePlayer)
-
-            self.player1.printBoard()
-            self.player2.printBoard()
 
     def _gameOver(self,
                   loser,
@@ -147,6 +151,10 @@ class Game(object):
         self.winner = self.player1 if loser == self.player2 else self.player2
         self.turns = turns
         self.exception = exception
+
+        if self.showVisualization:
+            self.player1.printBoard()
+            self.player2.printBoard()
 
         self.winner._gameWon()
         self.loser._gameLost()

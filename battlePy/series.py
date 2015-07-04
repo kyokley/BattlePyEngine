@@ -9,7 +9,9 @@ class Series(object):
                  alternateFirstPlayer=True,
                  debug=False,
                  boardWidth=None,
-                 boardHeight=None):
+                 boardHeight=None,
+                 showVisualization=False,
+                 visualizationInterval=.01):
         (self.player1,
          self.player2) = self.players = (player1, player2)
 
@@ -28,17 +30,27 @@ class Series(object):
         self.player1.hOffset = 0
         self.player2.hOffset = 20
 
+        self.showVisualization = showVisualization
+        self.visualizationInterval = visualizationInterval
+
+        self.term = Terminal()
+        print self.term.clear
+
         if alternateFirstPlayer:
             self.games = [Game(self.players[i % 2],
                                self.players[(i + 1) % 2],
                                debug=debug,
                                boardWidth=boardWidth,
-                               boardHeight=boardHeight) for i in xrange(self.numberOfGames)]
+                               boardHeight=boardHeight,
+                               showVisualization=self.showVisualization,
+                               visualizationInterval=self.visualizationInterval) for i in xrange(self.numberOfGames)]
         else:
             self.games = [Game(*self.players,
                                debug=debug,
                                boardWidth=boardWidth,
-                               boardHeight=boardHeight) for i in xrange(self.numberOfGames)]
+                               boardHeight=boardHeight,
+                               showVisualization=self.showVisualization,
+                               visualizationInterval=self.visualizationInterval) for i in xrange(self.numberOfGames)]
 
     @property
     def player1Losses(self):
@@ -57,9 +69,20 @@ class Series(object):
             else:
                 self.player2Wins += 1
 
+            if self.showVisualization:
+                self.printStats()
+            else:
+                with self.term.location():
+                    self.printStats()
+
+        if not self.showVisualization:
+            # For some reason I need to print one more time to keep the final results around
+            # May want to come back and clean this up at some point in the future
             self.printStats()
 
     def printStats(self):
-        print 'Games played: %s' % self.numberOfGames
-        print 'Player1 (%s) wins: %s' % (self.player1Alias, self.player1Wins)
-        print 'Player2 (%s) wins: %s' % (self.player2Alias, self.player2Wins)
+            print
+            print
+            print 'Games played: %s' % (self.player1Wins + self.player2Wins,)
+            print 'Player1 (%s) wins: %s' % (self.player1Alias, self.player1Wins)
+            print 'Player2 (%s) wins: %s' % (self.player2Alias, self.player2Wins)
