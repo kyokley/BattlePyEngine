@@ -158,11 +158,9 @@ class Player(object):
     def _fireShot(self):
         return self.fireShot()
 
-    @_gameClockTimedMethod
     def _gameWon(self):
         return self.gameWon()
 
-    @_gameClockTimedMethod
     def _gameLost(self):
         return self.gameLost()
 
