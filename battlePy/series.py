@@ -25,6 +25,9 @@ class Series(object):
         self.player1Wins = 0
         self.player2Wins = 0
 
+        self.player1.hOffset = 0
+        self.player2.hOffset = 20
+
         if alternateFirstPlayer:
             self.games = [Game(self.players[i % 2],
                                self.players[(i + 1) % 2],

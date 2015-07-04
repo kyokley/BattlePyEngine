@@ -137,7 +137,7 @@ class Game(object):
                     raise PlayerException(e, offensivePlayer)
 
             self.player1.printBoard()
-            self.player2.printBoard(hOffset=20)
+            self.player2.printBoard()
 
     def _gameOver(self,
                   loser,

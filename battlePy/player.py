@@ -29,6 +29,8 @@ class Player(object):
         self.currentGame = None
         self._gameTime = 0
         self._opponentMisses = set()
+        self.hOffset = 0
+        self.vOffset = 0
         self.initPlayer()
 
     def initPlayer(self):
@@ -180,35 +182,32 @@ class Player(object):
             self._opponentMisses.add(shot)
         return self.opponentShot(shot)
 
-    def printBoard(self,
-                   hOffset=0,
-                   vOffset=0):
+    def printBoard(self):
         term = Terminal()
 
-        print term.move(0 + vOffset, 0 + hOffset) + self.name[:12]
+        print term.move(0 + self.vOffset, 0 + self.hOffset) + self.name[:12]
         for i in xrange(1, self.currentGame.boardWidth + 1):
-            print term.move(1 + vOffset, i + hOffset) + '-'
-            print term.move(self.currentGame.boardHeight + 2 + vOffset, i + hOffset) + '-'
+            print term.move(1 + self.vOffset, i + self.hOffset) + '-'
+            print term.move(self.currentGame.boardHeight + 2 + self.vOffset, i + self.hOffset) + '-'
 
         for i in xrange(1, self.currentGame.boardHeight + 1):
-            print term.move(i + 1 + vOffset, 0 + hOffset) + '|'
-            print term.move(i + 1 + vOffset, self.currentGame.boardWidth + 1 + hOffset) + '|'
+            print term.move(i + 1 + self.vOffset, 0 + self.hOffset) + '|'
+            print term.move(i + 1 + self.vOffset, self.currentGame.boardWidth + 1 + self.hOffset) + '|'
 
         for ship in self.ships:
             for location in ship.locations:
                 if location not in ship.hits:
                     x, y = location
-                    print term.move(x + 2 + vOffset, y + 1 + hOffset) + term.green(ship.symbol)
+                    print term.move(x + 2 + self.vOffset, y + 1 + self.hOffset) + term.green(ship.symbol)
 
             for location in ship.hits:
                 x, y = location
-                print term.move(x + 2 + vOffset, y + 1 + hOffset) + term.red('X')
+                print term.move(x + 2 + self.vOffset, y + 1 + self.hOffset) + term.red('X')
 
         for location in self._opponentMisses:
             x, y = location
-            print term.move(x + 2 + vOffset, y + 1 + hOffset) + term.white('.')
-        print term.move(1 + vOffset, 0 + hOffset) + '+'
-        print term.move(self.currentGame.boardWidth + 2 + vOffset, 0 + hOffset) + '+'
-        print term.move(1 + vOffset, self.currentGame.boardHeight + 1 + hOffset) + '+'
-        print term.move(self.currentGame.boardWidth + 2 + vOffset, self.currentGame.boardHeight + 1 + hOffset) + '+'
-
+            print term.move(x + 2 + self.vOffset, y + 1 + self.hOffset) + term.white('.')
+        print term.move(1 + self.vOffset, 0 + self.hOffset) + '+'
+        print term.move(self.currentGame.boardWidth + 2 + self.vOffset, 0 + self.hOffset) + '+'
+        print term.move(1 + self.vOffset, self.currentGame.boardHeight + 1 + self.hOffset) + '+'
+        print term.move(self.currentGame.boardWidth + 2 + self.vOffset, self.currentGame.boardHeight + 1 + self.hOffset) + '+'
