@@ -176,11 +176,11 @@ class TestGameClockViolations(unittest.TestCase):
 
     def test_gameWon(self):
         self.testPlayer.gameWon = generateLongRunningFunc(self.timeoutLength)
-        self.assertRaises(GameClockViolationException, self.testPlayer._gameWon)
+        self.testPlayer._gameWon()
 
     def test_gameLost(self):
         self.testPlayer.gameLost = generateLongRunningFunc(self.timeoutLength)
-        self.assertRaises(GameClockViolationException, self.testPlayer._gameLost)
+        self.testPlayer._gameLost()
 
     def test_opponentShot(self):
         self.testPlayer.opponentShot = generateLongRunningFunc(self.timeoutLength)
