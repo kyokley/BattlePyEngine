@@ -153,8 +153,11 @@ class Game(object):
         self.exception = exception
 
         if self.showVisualization:
-            self.player1.printBoard()
-            self.player2.printBoard()
+            try:
+                self.player1.printBoard()
+                self.player2.printBoard()
+            except Exception, e:
+                print 'Error displaying board: %s' % str(e)
 
         self.winner._gameWon()
         self.loser._gameLost()
