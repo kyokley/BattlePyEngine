@@ -209,22 +209,21 @@ class Player(object):
 
     def _initializeGameBoard(self):
         self._clearBoard()
-        print self.term.move(0 + self.vOffset, 0 + self.hOffset) + self.name[:12]
+        print self.term.move(self.vOffset, self.hOffset) + self.name[:12]
         for i in xrange(1, self.currentGame.boardWidth + 1):
             print self.term.move(1 + self.vOffset, i + self.hOffset) + '-'
             print self.term.move(self.currentGame.boardHeight + 2 + self.vOffset, i + self.hOffset) + '-'
 
         for i in xrange(1, self.currentGame.boardHeight + 1):
-            print self.term.move(i + 1 + self.vOffset, 0 + self.hOffset) + '|'
+            print self.term.move(i + 1 + self.vOffset, self.hOffset) + '|'
             print self.term.move(i + 1 + self.vOffset, self.currentGame.boardWidth + 1 + self.hOffset) + '|'
 
-        print self.term.move(1 + self.vOffset, 0 + self.hOffset) + '+'
-        print self.term.move(self.currentGame.boardWidth + 2 + self.vOffset, 0 + self.hOffset) + '+'
+        print self.term.move(1 + self.vOffset, self.hOffset) + '+'
+        print self.term.move(self.currentGame.boardWidth + 2 + self.vOffset, self.hOffset) + '+'
         print self.term.move(1 + self.vOffset, self.currentGame.boardHeight + 1 + self.hOffset) + '+'
         print self.term.move(self.currentGame.boardWidth + 2 + self.vOffset, self.currentGame.boardHeight + 1 + self.hOffset) + '+'
 
     def printBoard(self):
-
         print self.term.move(0 + self.vOffset, 0 + self.hOffset) + self.name[:12]
         for i in xrange(1, self.currentGame.boardWidth + 1):
             print self.term.move(1 + self.vOffset, i + self.hOffset) + '-'
