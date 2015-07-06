@@ -151,10 +151,16 @@ class Game(object):
         self.winner = self.player1 if loser == self.player2 else self.player2
         self.turns = turns
         self.exception = exception
+        
+        if self.exception:
+            print 'Unhandled exception: %s' % self.exception
 
-        if self.showVisualization and not self.exception:
-            self.player1.printBoard()
-            self.player2.printBoard()
+        if self.showVisualization:
+            try:
+                self.player1.printBoard()
+                self.player2.printBoard()
+            except Exception, e:
+                print 'Error displaying board: %s' % str(e)
 
         self.winner._gameWon()
         self.loser._gameLost()
