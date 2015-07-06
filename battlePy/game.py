@@ -152,7 +152,7 @@ class Game(object):
         self.turns = turns
         self.exception = exception
 
-        if self.showVisualization:
+        if self.showVisualization and not self.exception:
             self.player1.printBoard()
             self.player2.printBoard()
 
