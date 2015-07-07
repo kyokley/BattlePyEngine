@@ -70,9 +70,15 @@ class Series(object):
                 self.player2Wins += 1
 
             if self.showVisualization:
+                if game.exception:
+                    print '%s threw an exception' % loser.name
+                    print game.exception
                 self.printStats()
             else:
                 with self.term.location():
+                    if game.exception:
+                        print '%s threw an exception' % loser.name
+                        print game.exception
                     self.printStats()
 
         if not self.showVisualization:
