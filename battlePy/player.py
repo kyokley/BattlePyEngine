@@ -23,7 +23,7 @@ class Player(object):
     name = docprop('name', 'Player name')
     currentGame = docprop('currentGame', 'Game that is currently being played')
 
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
         self.ships = None
         self.name = self.__class__.__name__
         self.currentGame = None
@@ -32,9 +32,9 @@ class Player(object):
         self.hOffset = 0
         self.vOffset = 0
         self.term = Terminal()
-        self.initPlayer()
+        self.initPlayer(*args, **kwargs)
 
-    def initPlayer(self):
+    def initPlayer(self, *args, **kwargs):
         ''' Initialize this player '''
         pass
 
