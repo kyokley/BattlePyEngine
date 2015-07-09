@@ -1,5 +1,6 @@
 from game import Game
 from blessings import Terminal
+import traceback
 
 class Series(object):
     def __init__(self,
@@ -11,7 +12,10 @@ class Series(object):
                  boardWidth=None,
                  boardHeight=None,
                  showVisualization=False,
-                 visualizationInterval=.01):
+                 visualizationInterval=.01,
+                 clearBoardOnException=True):
+        self.debug = debug
+        self.clearBoardOnException = clearBoardOnException
         (self.player1,
          self.player2) = self.players = (player1, player2)
 
@@ -71,9 +75,16 @@ class Series(object):
 
             if self.showVisualization:
                 if game.exception:
+                    if self.clearBoardOnException:
+                        print self.term.clear
                     print '%s threw an exception' % loser.name
                     print game.exception
                 self.printStats()
+                if game.exception and self.debug:
+                    print
+                    print game.traceback
+                    print
+                    break
             else:
                 with self.term.location():
                     if game.exception:
@@ -81,10 +92,16 @@ class Series(object):
                         print game.exception
                     self.printStats()
 
-        if not self.showVisualization:
-            # For some reason I need to print one more time to keep the final results around
-            # May want to come back and clean this up at some point in the future
-            self.printStats()
+                if game.exception and self.debug:
+                    print
+                    print game.traceback
+                    print
+                    break
+        else:
+            if not self.showVisualization:
+                # For some reason I need to print one more time to keep the final results around
+                # May want to come back and clean this up at some point in the future
+                self.printStats()
 
     def printStats(self):
             print

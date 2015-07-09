@@ -6,6 +6,7 @@ from battlePy.default_config import (DEFAULT_SHIPS,
 from battlePy.ship import Ship
 from battlePy.utils import docprop
 from time import sleep
+import traceback as tb
 
 class PlayerException(Exception):
     pass
@@ -52,6 +53,9 @@ class Game(object):
         self.showVisualization = showVisualization
         self.visualizationInterval = visualizationInterval
 
+        self.exception = None
+        self.traceback = None
+
     def createShips(self):
         ''' Generate a list of ship objects based on the given ship specifications '''
         return [Ship(*x, game=self) for x in self.shipSpecs]
@@ -66,6 +70,7 @@ class Game(object):
                 try:
                     player._newGame()
                 except Exception, e:
+                    self.traceback = tb.format_exc()
                     raise PlayerException(e, player)
 
             # Step 1
@@ -90,7 +95,7 @@ class Game(object):
                     try:
                         player._placeShips()
                     except Exception, e:
-                        print e
+                        self.traceback = tb.format_exc()
                         raise PlayerException(e, player)
 
                     if player._allShipsPlacedLegally():
@@ -111,6 +116,7 @@ class Game(object):
             try:
                 shot = offensivePlayer._fireShot()
             except Exception, e:
+                self.traceback = tb.format_exc()
                 raise PlayerException(e, offensivePlayer)
 
             hit, hitShip = defensivePlayer._checkIsHit(shot)
@@ -118,12 +124,14 @@ class Game(object):
             try:
                 defensivePlayer._opponentShot(shot)
             except Exception, e:
+                self.traceback = tb.format_exc()
                 raise PlayerException(e, defensivePlayer)
 
             if hit:
                 try:
                     offensivePlayer._shotHit(shot, hitShip.name)
                 except Exception, e:
+                    self.traceback = tb.format_exc()
                     raise PlayerException(e, offensivePlayer)
 
 
@@ -131,6 +139,7 @@ class Game(object):
                     try:
                         offensivePlayer._shipSunk(hitShip.name)
                     except Exception, e:
+                        self.traceback = tb.format_exc()
                         raise PlayerException(e, offensivePlayer)
                     done = defensivePlayer._checkAllShipsSunk()
                     if done:
@@ -141,6 +150,7 @@ class Game(object):
                 try:
                     offensivePlayer._shotMissed(shot)
                 except Exception, e:
+                    self.traceback = tb.format_exc()
                     raise PlayerException(e, offensivePlayer)
 
     def _gameOver(self,
