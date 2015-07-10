@@ -1,5 +1,6 @@
 from series import Series
 from itertools import combinations
+from blessings import Terminal
 
 class Tournament(object):
     def __init__(self,
@@ -21,6 +22,7 @@ class Tournament(object):
         self.showVisualization = showVisualization
         self.visualizationInterval = visualizationInterval
         self.clearBoardOnException = clearBoardOnException
+        self.term = Terminal()
 
     def run(self):
         self.results = dict([(player, [0, []]) for player in self.players])
@@ -37,6 +39,8 @@ class Tournament(object):
                             for x in combinations(self.players, 2)]
 
         for series in self.series:
+            if self.showVisualization:
+                print self.term.clear
             result = series.start()
             if result:
                 self.results[type(result[0])][0] += 1
