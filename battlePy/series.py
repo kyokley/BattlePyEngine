@@ -102,6 +102,13 @@ class Series(object):
                 # May want to come back and clean this up at some point in the future
                 self.printStats()
 
+        if self.player1Wins > self.player2Wins:
+            return self.player1, self.player2
+        elif self.player2Wins > self.player1Wins:
+            return self.player2, self.player1
+        else:
+            return None
+
     def printStats(self):
             print
             print
