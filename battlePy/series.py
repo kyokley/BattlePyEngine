@@ -1,6 +1,5 @@
 from game import Game
 from blessings import Terminal
-import traceback
 
 class Series(object):
     def __init__(self,
@@ -13,7 +12,7 @@ class Series(object):
                  boardHeight=None,
                  showVisualization=False,
                  visualizationInterval=.01,
-                 clearBoardOnException=True):
+                 clearBoardOnException=False):
         self.debug = debug
         self.clearBoardOnException = clearBoardOnException
         (self.player1,
@@ -74,12 +73,12 @@ class Series(object):
                 self.player2Wins += 1
 
             if self.showVisualization:
+                self.printStats()
                 if game.exception:
                     if self.clearBoardOnException:
                         print self.term.clear
                     print '%s threw an exception' % loser.name
                     print game.exception
-                self.printStats()
                 if game.exception and self.debug:
                     print
                     print game.traceback
@@ -87,10 +86,10 @@ class Series(object):
                     break
             else:
                 with self.term.location():
+                    self.printStats()
                     if game.exception:
                         print '%s threw an exception' % loser.name
                         print game.exception
-                    self.printStats()
 
                 if game.exception and self.debug:
                     print
@@ -109,3 +108,4 @@ class Series(object):
             print 'Games played: %s' % (self.player1Wins + self.player2Wins,)
             print 'Player1 (%s) wins: %s' % (self.player1Alias, self.player1Wins)
             print 'Player2 (%s) wins: %s' % (self.player2Alias, self.player2Wins)
+            print
