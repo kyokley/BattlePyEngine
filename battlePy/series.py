@@ -12,7 +12,8 @@ class Series(object):
                  boardHeight=None,
                  showVisualization=False,
                  visualizationInterval=.01,
-                 clearBoardOnException=False):
+                 clearBoardOnException=False,
+                 tournament=None):
         self.debug = debug
         self.clearBoardOnException = clearBoardOnException
         (self.player1,
@@ -36,9 +37,6 @@ class Series(object):
         self.showVisualization = showVisualization
         self.visualizationInterval = visualizationInterval
 
-        self.term = Terminal()
-        print self.term.clear
-
         if alternateFirstPlayer:
             self.games = [Game(self.players[i % 2],
                                self.players[(i + 1) % 2],
@@ -54,6 +52,15 @@ class Series(object):
                                boardHeight=boardHeight,
                                showVisualization=self.showVisualization,
                                visualizationInterval=self.visualizationInterval) for i in xrange(self.numberOfGames)]
+
+        self.player1.currentGame = self.games[0]
+        self.player2.currentGame = self.games[0]
+
+        self.tournament = tournament
+
+        self.term = Terminal()
+        if not self.tournament:
+            print self.term.clear
 
     @property
     def player1Losses(self):
@@ -79,6 +86,7 @@ class Series(object):
                         print self.term.clear
                     print '%s threw an exception' % loser.name
                     print game.exception
+                    print
                 if game.exception and self.debug:
                     print
                     print game.traceback
@@ -90,6 +98,7 @@ class Series(object):
                     if game.exception:
                         print '%s threw an exception' % loser.name
                         print game.exception
+                        print
 
                 if game.exception and self.debug:
                     print
@@ -112,7 +121,7 @@ class Series(object):
     def printStats(self):
             print
             print
-            print 'Games played: %s' % (self.player1Wins + self.player2Wins,)
-            print 'Player1 (%s) wins: %s' % (self.player1Alias, self.player1Wins)
-            print 'Player2 (%s) wins: %s' % (self.player2Alias, self.player2Wins)
+            print 'Series games played: %s' % (self.player1Wins + self.player2Wins,)
+            print 'Player1 (%s) series wins: %s' % (self.player1Alias, self.player1Wins)
+            print 'Player2 (%s) series wins: %s' % (self.player2Alias, self.player2Wins)
             print

@@ -38,12 +38,22 @@ class Tournament(object):
                               boardHeight=self.boardHeight,
                               showVisualization=self.showVisualization,
                               visualizationInterval=self.visualizationInterval,
-                              clearBoardOnException=self.clearBoardOnException)
+                              clearBoardOnException=self.clearBoardOnException,
+                              tournament=self)
                             for x in combinations(self.players, 2)]
+
+        self.series[0].player1._initializeGameBoard()
+        self.series[0].player2._initializeGameBoard()
+        self.displayLeaderBoard()
 
         for series in self.series:
             if self.showVisualization:
                 print self.term.clear
+                self.series[0].player1._initializeGameBoard()
+                self.series[0].player2._initializeGameBoard()
+                series.printStats()
+            self.displayLeaderBoard()
+
             result = series.start()
             if result is not None:
                 self.results[type(result[0])][0]['win'] += 1
@@ -55,19 +65,29 @@ class Tournament(object):
                 self.results[type(result[0])][0]['draw'] += 1
                 self.results[type(result[1])][0]['draw'] += 1
 
+            print
             self.displayLeaderBoard()
 
+        print self.term.move(0, 0)
+        print self.term.clear
+        self.displayLeaderBoard()
+        print
+        print
         self.finalResults()
+        print
 
     def displayLeaderBoard(self):
-        rankings = sorted(self.results.items(), key=lambda x: -x[1][0]['win'])
+        rankings = sorted(self.results.items(), key=lambda x: (-x[1][0]['win'], sum(x[1][0].values())))
         data = []
         for idx, ranking in enumerate(rankings):
             data.append(('%s: %s' % (idx + 1, ranking[0].__name__),
                          ranking[1][0]['win'],
                          ranking[1][0]['lose'],
-                         ranking[1][0]['draw'],))
-        table = tabulate(data, headers=['Player', 'Wins', 'Losses', 'Draws'])
+                         ranking[1][0]['draw'],
+                         sum(ranking[1][0].values())))
+        table = tabulate(data, headers=['Player', 'Wins', 'Losses', 'Draws', 'GP'])
+
+        print 'LeaderBoard'
         print table
 
     def finalResults(self):
