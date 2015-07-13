@@ -44,15 +44,15 @@ class Tournament(object):
 
         self.series[0].player1._initializeGameBoard()
         self.series[0].player2._initializeGameBoard()
-        self.displayLeaderBoard()
+        self.displayLeaderBoard(nextGameIndex=1)
 
-        for series in self.series:
+        for idx, series in enumerate(self.series):
             if self.showVisualization:
                 print self.term.clear
                 self.series[0].player1._initializeGameBoard()
                 self.series[0].player2._initializeGameBoard()
                 series.printStats()
-            self.displayLeaderBoard()
+            self.displayLeaderBoard(nextGameIndex=idx + 1)
 
             result = series.start()
             if result is not None:
@@ -66,7 +66,7 @@ class Tournament(object):
                 self.results[type(result[1])][0]['draw'] += 1
 
             print
-            self.displayLeaderBoard()
+            self.displayLeaderBoard(nextGameIndex=idx + 1)
 
         print self.term.move(0, 0)
         print self.term.clear
@@ -76,7 +76,7 @@ class Tournament(object):
         self.finalResults()
         print
 
-    def displayLeaderBoard(self):
+    def displayLeaderBoard(self, nextGameIndex=None):
         rankings = sorted(self.results.items(), key=lambda x: (-x[1][0]['win'], sum(x[1][0].values())))
         data = []
         for idx, ranking in enumerate(rankings):
@@ -87,7 +87,11 @@ class Tournament(object):
                          sum(ranking[1][0].values())))
         table = tabulate(data, headers=['Player', 'Wins', 'Losses', 'Draws', 'GP'])
 
-        print 'LeaderBoard'
+        if nextGameIndex is not None and nextGameIndex < len(self.series):
+            print self.term.bold('Next matchup:') + ' %s v. %s' % (self.series[nextGameIndex].player1.name,
+                                                                   self.series[nextGameIndex].player2.name)
+            print
+        print self.term.bold('LeaderBoard')
         print table
 
     def finalResults(self):

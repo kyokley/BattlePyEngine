@@ -121,6 +121,7 @@ class Series(object):
     def printStats(self):
             print
             print
+            print self.term.bold('Current Matchup:')
             print 'Series games played: %s' % (self.player1Wins + self.player2Wins,)
             print 'Player1 (%s) series wins: %s' % (self.player1Alias, self.player1Wins)
             print 'Player2 (%s) series wins: %s' % (self.player2Alias, self.player2Wins)
