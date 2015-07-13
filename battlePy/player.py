@@ -204,8 +204,9 @@ class Player(object):
                     print self.term.move(self.currentGame.boardHeight - y + 1 + self.vOffset, x + 1 + self.hOffset) + self.term.green(ship.symbol)
 
     def _displayHit(self, shot):
-        x, y = shot
-        print self.term.move(self.currentGame.boardHeight - y + 1 + self.vOffset, x + 1 + self.hOffset) + self.term.red('X')
+        if self._isValidPoint(shot) or self.currentGame.debug:
+            x, y = shot
+            print self.term.move(self.currentGame.boardHeight - y + 1 + self.vOffset, x + 1 + self.hOffset) + self.term.red('X')
 
 
     def _initializeGameBoard(self):
@@ -246,9 +247,14 @@ class Player(object):
                 print self.term.move(self.currentGame.boardHeight - y + 1 + self.vOffset, x + 1 + self.hOffset) + self.term.red('X')
 
         for location in self._opponentMisses:
-            x, y = location
-            print self.term.move(self.currentGame.boardHeight - y + 1 + self.vOffset, x + 1 + self.hOffset) + self.term.white('.')
+            if self._isValidPoint(location) or self.currentGame.debug:
+                x, y = location
+                print self.term.move(self.currentGame.boardHeight - y + 1 + self.vOffset, x + 1 + self.hOffset) + self.term.white('.')
         print self.term.move(1 + self.vOffset, 0 + self.hOffset) + '+'
         print self.term.move(self.currentGame.boardHeight + 2 + self.vOffset, 0 + self.hOffset) + '+'
         print self.term.move(1 + self.vOffset, self.currentGame.boardWidth + 1 + self.hOffset) + '+'
         print self.term.move(self.currentGame.boardHeight + 2 + self.vOffset, self.currentGame.boardWidth + 1 + self.hOffset) + '+'
+
+    def _isValidPoint(self, point):
+        return (0 <= point[0] < self.currentGame.boardWidth and
+                0 <= point[1] < self.currentGame.boardHeight)
