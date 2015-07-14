@@ -185,3 +185,23 @@ class TestGameClockViolations(unittest.TestCase):
     def test_opponentShot(self):
         self.testPlayer.opponentShot = generateLongRunningFunc(self.timeoutLength)
         self.assertRaises(GameClockViolationException, self.testPlayer._opponentShot, (0, 0))
+
+    def test_isValidPoint(self):
+        point1 = (0, 0)
+        point2 = (self.game.boardWidth - 1, 0)
+        point3 = (0, self.game.boardHeight - 1)
+        point4 = (self.game.boardWidth - 1, self.game.boardHeight - 1)
+        point5 = (-1, 0)
+        point6 = (0, -1)
+        point7 = (self.game.boardWidth, self.game.boardHeight)
+        point8 = (-10, -10)
+
+        self.assertTrue(self.testPlayer._isValidPoint(point1))
+        self.assertTrue(self.testPlayer._isValidPoint(point2))
+        self.assertTrue(self.testPlayer._isValidPoint(point3))
+        self.assertTrue(self.testPlayer._isValidPoint(point4))
+
+        self.assertFalse(self.testPlayer._isValidPoint(point5))
+        self.assertFalse(self.testPlayer._isValidPoint(point6))
+        self.assertFalse(self.testPlayer._isValidPoint(point7))
+        self.assertFalse(self.testPlayer._isValidPoint(point8))
