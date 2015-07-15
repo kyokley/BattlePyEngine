@@ -24,6 +24,9 @@ class Ship(object):
         self.game = game
         self.symbol = self.name[0]
 
+    def __repr__(self):
+        return "<%s %s %s>" % (self.__class__.__name__, id(self), self.name)
+
     def placeShip(self, location, orientation):
         self.locations = set()
 
