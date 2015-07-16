@@ -38,6 +38,15 @@ class Player(object):
         ''' Initialize this player '''
         pass
 
+    @property
+    def boardWidth(self):
+        ''' Width of the current game board'''
+        return self.currentGame and self.currentGame.boardWidth or None
+    @property
+    def boardHeight(self):
+        ''' Height of the current game board'''
+        return self.currentGame and self.currentGame.boardHeight or None
+
     def placeShips(self):
         ''' Determine where ships should be placed and place them on the game board '''
         raise NotImplementedError()
