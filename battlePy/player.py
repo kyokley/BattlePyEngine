@@ -1,6 +1,17 @@
+from importlib import import_module
 from battlePy.utils import docprop
 from datetime import datetime
 from blessings import Terminal
+
+
+def loadPlayerModule(module_path):
+    """Find a module by dotted-path (eg samples.random)
+    and instantiate the Agent() inside it.
+    
+    """
+    agentModule = import_module(module_path)
+    return agentModule.Agent
+
 
 class GameClockViolationException(Exception):
     pass
