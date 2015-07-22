@@ -56,6 +56,9 @@ class Game(object):
         self.exception = None
         self.traceback = None
 
+        self.playerShots = {self.player1: set(),
+                            self.player2: set()}
+
     def createShips(self):
         ''' Generate a list of ship objects based on the given ship specifications '''
         return [Ship(*x, game=self) for x in self.shipSpecs]
@@ -115,6 +118,7 @@ class Game(object):
 
             try:
                 shot = offensivePlayer._fireShot()
+                self.playerShots[offensivePlayer].add(shot)
             except Exception, e:
                 self.traceback = tb.format_exc()
                 raise PlayerException(e, offensivePlayer)
@@ -161,6 +165,10 @@ class Game(object):
         self.winner = self.player1 if loser == self.player2 else self.player2
         self.turns = turns
         self.exception = exception
+
+        if not self.exception:
+            self.winner._numberOfWins += 1
+            self.winner._shotsTakenPerWin += len(self.playerShots[self.winner])
 
         if self.showVisualization:
             try:

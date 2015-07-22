@@ -45,6 +45,16 @@ class Player(object):
         self.term = Terminal()
         self.initPlayer(*args, **kwargs)
 
+        self._numberOfWins = 0
+        self._shotsTakenPerWin = 0
+
+    @property
+    def _averageShotsTakenPerWin(self):
+        if self._numberOfWins > 0:
+            return float(self._shotsTakenPerWin)/self._numberOfWins
+        else:
+            return None
+
     def initPlayer(self, *args, **kwargs):
         ''' Initialize this player '''
         pass
