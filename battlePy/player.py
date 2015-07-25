@@ -218,8 +218,8 @@ class Player(object):
 
     def _clearBoard(self):
         print self.term.move(0 + self.vOffset, 0 + self.hOffset) + ' ' * 12
-        for x in xrange(self.currentGame.boardWidth):
-            for y in xrange(self.currentGame.boardHeight):
+        for y in xrange(self.currentGame.boardHeight):
+            for x in xrange(self.currentGame.boardWidth):
                 print self.term.move(self.currentGame.boardHeight - y + 1 + self.vOffset, x + 1 + self.hOffset) + ' '
 
     def _displayMiss(self, shot):
