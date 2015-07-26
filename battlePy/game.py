@@ -169,6 +169,8 @@ class Game(object):
         if not self.exception:
             self.winner._numberOfWins += 1
             self.winner._shotsTakenPerWin += len(self.playerShots[self.winner])
+        else:
+            self.loser._lossesByException += 1
 
         if self.showVisualization:
             try:

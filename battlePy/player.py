@@ -47,6 +47,7 @@ class Player(object):
 
         self._numberOfWins = 0
         self._shotsTakenPerWin = 0
+        self._lossesByException = 0
 
     @property
     def _averageShotsTakenPerWin(self):
