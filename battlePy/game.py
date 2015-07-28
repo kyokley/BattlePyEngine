@@ -88,7 +88,7 @@ class Game(object):
             # Step 2
             # Take turns blowing ships out of the water
             self._takeTurns()
-            return self.winner, self.loser
+            return self.winner, self.loser, self.turns
         except PlayerException, e:
             return self._gameOver(e.args[1], exception=e)
 
@@ -181,7 +181,7 @@ class Game(object):
 
         self.winner._gameWon()
         self.loser._gameLost()
-        return self.winner, self.loser
+        return self.winner, self.loser, self.turns
 
     def isValidShipPlacement(self, ship):
         ''' Is ship placement valid for this game board? '''

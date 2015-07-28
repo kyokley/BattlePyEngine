@@ -1,5 +1,6 @@
 from game import Game
 from blessings import Terminal
+import math
 
 class Series(object):
     def __init__(self,
@@ -55,6 +56,14 @@ class Series(object):
 
         self.player1.currentGame = self.games[0]
         self.player2.currentGame = self.games[0]
+        self.player1.totalTurns = 0
+        self.player1.averageTurns = 0
+        self.player1.minTurns = 1000
+        self.player1.maxTurns = 0
+        self.player2.totalTurns = 0
+        self.player2.averageTurns = 0
+        self.player2.minTurns = 1000
+        self.player2.maxTurns = 0
 
         self.tournament = tournament
 
@@ -72,12 +81,27 @@ class Series(object):
 
     def start(self):
         for game in self.games:
-            winner, loser = game.playGame()
+            winner, loser, turns = game.playGame()
 
             if winner == self.player1:
                 self.player1Wins += 1
+                self.player1.totalTurns += math.ceil(turns/2.0)
+                if math.ceil(turns/2.0) < self.player1.minTurns:
+                    self.player1.minTurns = math.ceil(turns/2.0)
+                if math.ceil(turns/2.0) > self.player1.maxTurns:
+                    self.player1.maxTurns = math.ceil(turns/2.0)
+                self.player1.averageTurns = (
+                    self.player1.totalTurns/self.player1Wins)
+
             else:
-                self.player2Wins += 1
+               self.player2Wins += 1
+               self.player2.totalTurns += math.ceil(turns/2.0)
+               if math.ceil(turns/2.0) < self.player2.minTurns:
+                   self.player2.minTurns = math.ceil(turns/2.0)
+               if math.ceil(turns/2.0) > self.player2.maxTurns:
+                   self.player2.maxTurns = math.ceil(turns/2.0)
+               self.player2.averageTurns = (
+                   self.player2.totalTurns/self.player2Wins)
 
             if self.showVisualization:
                 self.printStats()
@@ -126,8 +150,14 @@ class Series(object):
             print 'Player1 (%s) series wins: %s' % (self.player1Alias, self.player1Wins)
             if self.player1._lossesByException:
                 print 'Player1 (%s) losses by exception: %s' % (self.player1Alias, self.player1._lossesByException)
+            print 'Player1 (%s) average turns to win: %.2f' % (self.player1Alias, self.player1.averageTurns)
+            print 'Player1 (%s) minimum turns to win: %s' % (self.player1Alias, self.player1.minTurns)
+            print 'Player1 (%s) maximum turns to win: %s' % (self.player1Alias, self.player1.maxTurns)
             print
             print 'Player2 (%s) series wins: %s' % (self.player2Alias, self.player2Wins)
             if self.player2._lossesByException:
                 print 'Player2 (%s) losses by exception: %s' % (self.player2Alias, self.player2._lossesByException)
+            print 'Player2 (%s) average turns to win: %.2f' % (self.player2Alias, self.player2.averageTurns)
+            print 'Player2 (%s) minimum turns to win: %s' % (self.player2Alias, self.player2.minTurns)
+            print 'Player2 (%s) maximum turns to win: %s' % (self.player2Alias, self.player2.maxTurns)
             print
