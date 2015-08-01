@@ -97,15 +97,15 @@ class Series(object):
                     self.player1.totalTurns/self.player1Wins)
 
             else:
-               self.player2Wins += 1
-               self.player2.totalTurns += math.ceil(turns/2.0)
-               if (math.ceil(turns/2.0) < self.player2.minTurns or
-                       self.player2.minTurns == 0):
-                   self.player2.minTurns = math.ceil(turns/2.0)
-               if math.ceil(turns/2.0) > self.player2.maxTurns:
-                   self.player2.maxTurns = math.ceil(turns/2.0)
-               self.player2.averageTurns = (
-                   self.player2.totalTurns/self.player2Wins)
+                self.player2Wins += 1
+                self.player2.totalTurns += math.ceil(turns/2.0)
+                if (math.ceil(turns/2.0) < self.player2.minTurns or
+                        self.player2.minTurns == 0):
+                    self.player2.minTurns = math.ceil(turns/2.0)
+                if math.ceil(turns/2.0) > self.player2.maxTurns:
+                    self.player2.maxTurns = math.ceil(turns/2.0)
+                self.player2.averageTurns = (
+                        self.player2.totalTurns/self.player2Wins)
 
             if self.showVisualization:
                 self.printStats()
