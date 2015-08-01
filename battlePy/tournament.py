@@ -13,6 +13,7 @@ class Tournament(object):
                  boardHeight=None,
                  showVisualization=False,
                  visualizationInterval=.01,
+                 showStatistics=False,
                  clearBoardOnException=False):
         self.players = players
         self.numberOfGames = numberOfGames
@@ -22,6 +23,7 @@ class Tournament(object):
         self.boardHeight = boardHeight
         self.showVisualization = showVisualization
         self.visualizationInterval = visualizationInterval
+        self.showStatistics = showStatistics
         self.clearBoardOnException = clearBoardOnException
         self.term = Terminal()
 
