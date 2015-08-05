@@ -2,6 +2,7 @@ from series import Series
 from itertools import combinations
 from blessings import Terminal
 from tabulate import tabulate
+import random
 
 class Tournament(object):
     def __init__(self,
@@ -43,6 +44,7 @@ class Tournament(object):
                               clearBoardOnException=self.clearBoardOnException,
                               tournament=self)
                             for x in combinations(self.players, 2)]
+        random.shuffle(self.series)
 
         self.series[0].player1._initializeGameBoard()
         self.series[0].player2._initializeGameBoard()
