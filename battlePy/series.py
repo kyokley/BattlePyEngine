@@ -133,6 +133,10 @@ class Series(object):
                     print game.traceback
                     print
                     break
+
+            if (self.player1Wins == math.floor(len(self.games) / 2.0) + 1 or
+                    self.player2Wins == math.floor(len(self.games) / 2.0) + 1):
+                break
         else:
             if not self.showVisualization:
                 # For some reason I need to print one more time to keep the final results around
