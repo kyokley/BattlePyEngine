@@ -7,7 +7,7 @@ from blessings import Terminal
 def loadPlayerModule(module_path):
     """Find a module by dotted-path (eg samples.random)
     and instantiate the Agent() inside it.
-    
+
     """
     agentModule = import_module(module_path)
     return agentModule.Agent
