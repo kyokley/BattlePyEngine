@@ -47,14 +47,14 @@ class Series(object):
                                boardWidth=boardWidth,
                                boardHeight=boardHeight,
                                showVisualization=self.showVisualization,
-                               visualizationInterval=self.visualizationInterval) for i in xrange(self.numberOfGames)]
+                               visualizationInterval=self.visualizationInterval) for i in range(self.numberOfGames)]
         else:
             self.games = [Game(*self.players,
                                debug=debug,
                                boardWidth=boardWidth,
                                boardHeight=boardHeight,
                                showVisualization=self.showVisualization,
-                               visualizationInterval=self.visualizationInterval) for i in xrange(self.numberOfGames)]
+                               visualizationInterval=self.visualizationInterval) for i in range(self.numberOfGames)]
 
         self.player1.currentGame = self.games[0]
         self.player2.currentGame = self.games[0]

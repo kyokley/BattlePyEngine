@@ -1,4 +1,4 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
 def readme():
     with open('README.md') as f:
@@ -8,11 +8,12 @@ setup(name='BattlePy',
       version='0.3.1',
       description='Battleship AI Engine',
       long_description=readme(),
+      packages=find_packages('src', exclude=['tests']),
+      package_dir={'': 'src'},
       url='http://github.com/kyokley/BattlePy',
       author='Kevin Yokley',
       author_email='kyokley2@gmail.com',
       license='MIT',
-      packages=['battlePy'],
       install_requires=['blessings',
                         'tabulate'],
       test_suite='nose.collector',

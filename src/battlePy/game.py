@@ -94,7 +94,7 @@ class Game(object):
 
     def _placeShips(self):
         for player in self.players:
-                for i in xrange(100):
+                for i in range(100):
                     try:
                         player._placeShips()
                     except Exception, e:
