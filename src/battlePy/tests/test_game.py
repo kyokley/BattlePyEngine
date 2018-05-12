@@ -46,7 +46,7 @@ class TestPlaceShips(unittest.TestCase):
 
         try:
             self.game._placeShips()
-        except Exception, e:
+        except Exception as e:
             exception = e
 
         self.assertTrue(self.player1._placeShips.called)

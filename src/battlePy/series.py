@@ -1,4 +1,4 @@
-from game import Game
+from battlePy.game import Game
 from blessings import Terminal
 import math
 
@@ -71,7 +71,7 @@ class Series(object):
 
         self.term = Terminal()
         if not self.tournament:
-            print self.term.clear
+            print(self.term.clear)
 
     @property
     def player1Losses(self):
@@ -111,27 +111,27 @@ class Series(object):
                 self.printStats()
                 if game.exception:
                     if self.clearBoardOnException:
-                        print self.term.clear
-                    print '%s threw an exception' % loser.name
-                    print game.exception
-                    print
+                        print(self.term.clear)
+                    print('%s threw an exception' % loser.name)
+                    print(game.exception)
+                    print()
                 if game.exception and self.debug:
-                    print
-                    print game.traceback
-                    print
+                    print()
+                    print(game.traceback)
+                    print()
                     break
             else:
                 with self.term.location():
                     self.printStats()
                     if game.exception:
-                        print '%s threw an exception' % loser.name
-                        print game.exception
-                        print
+                        print('%s threw an exception' % loser.name)
+                        print(game.exception)
+                        print()
 
                 if game.exception and self.debug:
-                    print
-                    print game.traceback
-                    print
+                    print()
+                    print(game.traceback)
+                    print()
                     break
 
             if (self.player1Wins == math.floor(len(self.games) / 2.0) + 1 or
@@ -151,23 +151,23 @@ class Series(object):
             return None
 
     def printStats(self):
-            print
-            print
-            print self.term.bold('Current Matchup:')
-            print 'Series games played: %s' % (self.player1Wins + self.player2Wins,)
-            print 'Player1 (%s) series wins: %s' % (self.player1Alias, self.player1Wins)
+            print()
+            print()
+            print(self.term.bold('Current Matchup:'))
+            print('Series games played: %s' % (self.player1Wins + self.player2Wins,))
+            print('Player1 (%s) series wins: %s' % (self.player1Alias, self.player1Wins))
             if self.player1._lossesByException:
-                print 'Player1 (%s) losses by exception: %s' % (self.player1Alias, self.player1._lossesByException)
+                print('Player1 (%s) losses by exception: %s' % (self.player1Alias, self.player1._lossesByException))
             if self.showStatistics:
-                print 'Player1 (%s) average turns to win: %.2f' % (self.player1Alias, self.player1.averageTurns)
-                print 'Player1 (%s) minimum turns to win: %s' % (self.player1Alias, self.player1.minTurns)
-                print 'Player1 (%s) maximum turns to win: %s' % (self.player1Alias, self.player1.maxTurns)
-            print
-            print 'Player2 (%s) series wins: %s' % (self.player2Alias, self.player2Wins)
+                print('Player1 (%s) average turns to win: %.2f' % (self.player1Alias, self.player1.averageTurns))
+                print('Player1 (%s) minimum turns to win: %s' % (self.player1Alias, self.player1.minTurns))
+                print('Player1 (%s) maximum turns to win: %s' % (self.player1Alias, self.player1.maxTurns))
+            print()
+            print('Player2 (%s) series wins: %s' % (self.player2Alias, self.player2Wins))
             if self.player2._lossesByException:
-                print 'Player2 (%s) losses by exception: %s' % (self.player2Alias, self.player2._lossesByException)
+                print('Player2 (%s) losses by exception: %s' % (self.player2Alias, self.player2._lossesByException))
             if self.showStatistics:
-                print 'Player2 (%s) average turns to win: %.2f' % (self.player2Alias, self.player2.averageTurns)
-                print 'Player2 (%s) minimum turns to win: %s' % (self.player2Alias, self.player2.minTurns)
-                print 'Player2 (%s) maximum turns to win: %s' % (self.player2Alias, self.player2.maxTurns)
-            print
+                print('Player2 (%s) average turns to win: %.2f' % (self.player2Alias, self.player2.averageTurns))
+                print('Player2 (%s) minimum turns to win: %s' % (self.player2Alias, self.player2.minTurns))
+                print('Player2 (%s) maximum turns to win: %s' % (self.player2Alias, self.player2.maxTurns))
+            print()

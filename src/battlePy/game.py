@@ -72,7 +72,7 @@ class Game(object):
 
                 try:
                     player._newGame()
-                except Exception, e:
+                except Exception as e:
                     self.traceback = tb.format_exc()
                     raise PlayerException(e, player)
 
@@ -89,7 +89,7 @@ class Game(object):
             # Take turns blowing ships out of the water
             self._takeTurns()
             return self.winner, self.loser, self.turns
-        except PlayerException, e:
+        except PlayerException as e:
             return self._gameOver(e.args[1], exception=e)
 
     def _placeShips(self):
@@ -97,7 +97,7 @@ class Game(object):
                 for i in range(100):
                     try:
                         player._placeShips()
-                    except Exception, e:
+                    except Exception as e:
                         self.traceback = tb.format_exc()
                         raise PlayerException(e, player)
 
@@ -119,7 +119,7 @@ class Game(object):
             try:
                 shot = offensivePlayer._fireShot()
                 self.playerShots[offensivePlayer].add(shot)
-            except Exception, e:
+            except Exception as e:
                 self.traceback = tb.format_exc()
                 raise PlayerException(e, offensivePlayer)
 
@@ -127,14 +127,14 @@ class Game(object):
 
             try:
                 defensivePlayer._opponentShot(shot)
-            except Exception, e:
+            except Exception as e:
                 self.traceback = tb.format_exc()
                 raise PlayerException(e, defensivePlayer)
 
             if hit:
                 try:
                     offensivePlayer._shotHit(shot, hitShip.name)
-                except Exception, e:
+                except Exception as e:
                     self.traceback = tb.format_exc()
                     raise PlayerException(e, offensivePlayer)
 
@@ -142,7 +142,7 @@ class Game(object):
                 if hitShip.isSunk():
                     try:
                         offensivePlayer._shipSunk(hitShip.name)
-                    except Exception, e:
+                    except Exception as e:
                         self.traceback = tb.format_exc()
                         raise PlayerException(e, offensivePlayer)
                     done = defensivePlayer._checkAllShipsSunk()
@@ -153,7 +153,7 @@ class Game(object):
             else:
                 try:
                     offensivePlayer._shotMissed(shot)
-                except Exception, e:
+                except Exception as e:
                     self.traceback = tb.format_exc()
                     raise PlayerException(e, offensivePlayer)
 
@@ -176,8 +176,8 @@ class Game(object):
             try:
                 self.player1.printBoard()
                 self.player2.printBoard()
-            except Exception, e:
-                print 'Error displaying board: %s' % str(e)
+            except Exception as e:
+                print('Error displaying board: %s' % str(e))
 
         self.winner._gameWon()
         self.loser._gameLost()
