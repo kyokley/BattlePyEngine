@@ -18,7 +18,7 @@ setup(name='BattlePy',
       install_requires=['blessings',
                         'tabulate'],
       test_suite='nose.collector',
-      tests_require=['nose',
+      tests_require=['pytest',
                      'mock',
                      ],
       zip_safe=False)
