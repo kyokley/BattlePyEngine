@@ -16,28 +16,28 @@ class TestPlaceShip(unittest.TestCase):
 
     def test_placeShipUp(self):
         self.testShip.placeShip((0, 0), UP)
-        self.assertEquals(self.testShip.locations, set([(0, 0),
+        self.assertEqual(self.testShip.locations, set([(0, 0),
                                                         (0, 1),
                                                         (0, 2),
                                                         ]))
 
     def test_placeShipDown(self):
         self.testShip.placeShip((5, 5), DOWN)
-        self.assertEquals(self.testShip.locations, set([(5, 5),
+        self.assertEqual(self.testShip.locations, set([(5, 5),
                                                         (5, 4),
                                                         (5, 3),
                                                         ]))
 
     def test_placeShipRight(self):
         self.testShip.placeShip((5, 2), RIGHT)
-        self.assertEquals(self.testShip.locations, set([(5, 2),
+        self.assertEqual(self.testShip.locations, set([(5, 2),
                                                         (6, 2),
                                                         (7, 2),
                                                         ]))
 
     def test_placeShipLeft(self):
         self.testShip.placeShip((5, 2), LEFT)
-        self.assertEquals(self.testShip.locations, set([(5, 2),
+        self.assertEqual(self.testShip.locations, set([(5, 2),
                                                         (4, 2),
                                                         (3, 2),
                                                         ]))
@@ -78,14 +78,14 @@ class TestAddHit(unittest.TestCase):
         shot = (0, 0)
         self.testShip.addHit(shot)
 
-        self.assertEquals(self.testShip.hits, set())
+        self.assertEqual(self.testShip.hits, set())
 
     def test_hit(self):
         self.testShip.placeShip((5, 5), UP)
         shot = (5, 7)
         self.testShip.addHit(shot)
 
-        self.assertEquals(self.testShip.hits, set([(5, 7)]))
+        self.assertEqual(self.testShip.hits, set([(5, 7)]))
 
 
 class TestIsSunk(unittest.TestCase):

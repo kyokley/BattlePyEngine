@@ -58,5 +58,5 @@ class TestPlaceShips(unittest.TestCase):
         self.assertTrue(self.player1._allShipsPlacedLegally.called)
         self.assertTrue(self.player2._allShipsPlacedLegally.called)
 
-        self.assertEquals(self.player2, exception.args[1])
+        self.assertEqual(self.player2, exception.args[1])
         self.assertTrue(isinstance(exception, PlayerException))

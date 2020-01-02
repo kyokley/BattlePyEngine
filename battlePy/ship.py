@@ -1,4 +1,4 @@
-from utils import docprop
+from battlePy.utils import docprop
 
 (UP,
  DOWN,

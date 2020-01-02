@@ -1,4 +1,4 @@
-from game import Game
+from battlePy.game import Game
 from blessings import Terminal
 import math
 
