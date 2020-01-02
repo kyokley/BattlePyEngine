@@ -1,12 +1,14 @@
-from battlePy.default_config import (DEFAULT_SHIPS,
-                                     BOARD_WIDTH,
-                                     BOARD_HEIGHT,
-                                     TIMEOUT_LENGTH,
-                                     )
+import traceback as tb
+from time import sleep
+
+from battlePy.default_config import (
+    BOARD_HEIGHT,
+    BOARD_WIDTH,
+    DEFAULT_SHIPS,
+    TIMEOUT_LENGTH,
+)
 from battlePy.ship import Ship
 from battlePy.utils import docprop
-from time import sleep
-import traceback as tb
 
 
 class PlayerException(Exception):
@@ -24,22 +26,25 @@ class Game(object):
     loser = docprop('loser', 'Loser of the game')
     turns = docprop('turns', 'Total number of turns taken by both players')
     debug = docprop('debug', 'Is debugging mode?')
-    shipSpecs = docprop('shipSpecs', 'List of tuples containing pairs of ship names and sizes')
+    shipSpecs = docprop(
+        'shipSpecs', 'List of tuples containing pairs of ship names and sizes'
+    )
     boardWidth = docprop('boardWidth', 'Game board width')
     boardHeight = docprop('boardHeight', 'Game board height')
 
-    def __init__(self,
-                 player1,
-                 player2,
-                 debug=False,
-                 shipSpecs=None,
-                 boardWidth=None,
-                 boardHeight=None,
-                 timeoutLength=None,
-                 showVisualization=False,
-                 visualizationInterval=.01):
-        (self.player1,
-         self.player2) = self.players = (player1, player2)
+    def __init__(
+        self,
+        player1,
+        player2,
+        debug=False,
+        shipSpecs=None,
+        boardWidth=None,
+        boardHeight=None,
+        timeoutLength=None,
+        showVisualization=False,
+        visualizationInterval=0.01,
+    ):
+        (self.player1, self.player2) = self.players = (player1, player2)
 
         self.winner = None
         self.loser = None
@@ -59,8 +64,7 @@ class Game(object):
         self.exception = None
         self.traceback = None
 
-        self.playerShots = {self.player1: set(),
-                            self.player2: set()}
+        self.playerShots = {self.player1: set(), self.player2: set()}
 
     def createShips(self):
         ''' Generate a list of ship objects based on the given ship specifications '''
@@ -107,7 +111,10 @@ class Game(object):
                 if player._allShipsPlacedLegally():
                     break
             else:
-                raise PlayerException("%s failed to place ships after %s tries" % (player.name, i + 1), player)
+                raise PlayerException(
+                    "%s failed to place ships after %s tries" % (player.name, i + 1),
+                    player,
+                )
 
     def _takeTurns(self):
         count = -1
@@ -159,10 +166,7 @@ class Game(object):
                     self.traceback = tb.format_exc()
                     raise PlayerException(e, offensivePlayer)
 
-    def _gameOver(self,
-                  loser,
-                  turns=0,
-                  exception=None):
+    def _gameOver(self, loser, turns=0, exception=None):
         self.loser = loser
         self.winner = self.player1 if loser == self.player2 else self.player2
         self.turns = turns
@@ -191,10 +195,12 @@ class Game(object):
             return False
 
         for location in ship.locations:
-            if (location[0] < 0 or
-                    location[0] >= self.boardWidth or
-                    location[1] < 0 or
-                    location[1] >= self.boardHeight):
+            if (
+                location[0] < 0
+                or location[0] >= self.boardWidth
+                or location[1] < 0
+                or location[1] >= self.boardHeight
+            ):
                 return False
 
         return True

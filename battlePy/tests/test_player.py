@@ -1,18 +1,18 @@
-import unittest
-import mock
 import time
-from battlePy.ship import Ship
-from battlePy.player import Player, GameClockViolationException
-from battlePy.ship import DOWN, RIGHT
-from battlePy.default_config import (BOARD_WIDTH,
-                                     BOARD_HEIGHT,
-                                     )
+import unittest
+
+import mock
+
+from battlePy.default_config import BOARD_HEIGHT, BOARD_WIDTH
 from battlePy.game import Game
+from battlePy.player import GameClockViolationException, Player
+from battlePy.ship import DOWN, RIGHT, Ship
 
 
 def generateLongRunningFunc(timeLength):
     def longRunningFunc(*args, **kwargs):
-        time.sleep(timeLength + .001)
+        time.sleep(timeLength + 0.001)
+
     return longRunningFunc
 
 
@@ -26,10 +26,9 @@ class TestShipsPlacedLegally(unittest.TestCase):
         self.ship1 = Ship('ship1', 3, self.game)
         self.ship2 = Ship('ship2', 4, self.game)
         self.ship3 = Ship('ship3', 2, self.game)
-        self.testPlayer._setShips([self.ship1,
-                                   self.ship2,
-                                   self.ship3,
-                                   ])
+        self.testPlayer._setShips(
+            [self.ship1, self.ship2, self.ship3,]
+        )
 
     def test_shipPlacedOffBoard(self):
         self.ship1.placeShip((0, 0), DOWN)
@@ -79,10 +78,9 @@ class TestCheckIsHit(unittest.TestCase):
         self.ship1 = Ship('ship1', 3, self.game)
         self.ship2 = Ship('ship2', 4, self.game)
         self.ship3 = Ship('ship3', 2, self.game)
-        self.testPlayer._setShips([self.ship1,
-                                   self.ship2,
-                                   self.ship3,
-                                   ])
+        self.testPlayer._setShips(
+            [self.ship1, self.ship2, self.ship3,]
+        )
         self.ship1.placeShip((5, 5), DOWN)
         self.ship2.placeShip((0, 6), RIGHT)
         self.ship3.placeShip((6, 5), RIGHT)
@@ -112,10 +110,9 @@ class TestCheckAllShipsSunk(unittest.TestCase):
         self.ship1 = Ship('ship1', 3, self.game)
         self.ship2 = Ship('ship2', 4, self.game)
         self.ship3 = Ship('ship3', 2, self.game)
-        self.testPlayer._setShips([self.ship1,
-                                   self.ship2,
-                                   self.ship3,
-                                   ])
+        self.testPlayer._setShips(
+            [self.ship1, self.ship2, self.ship3,]
+        )
         self.ship1.placeShip((5, 5), DOWN)
         self.ship2.placeShip((0, 6), RIGHT)
         self.ship3.placeShip((6, 5), RIGHT)
@@ -139,8 +136,10 @@ class TestGameClockViolations(unittest.TestCase):
     def setUp(self):
         self.testPlayer = Player()
         self.mockPlayer = mock.MagicMock()
-        self.timeoutLength = .01
-        self.game = Game(self.testPlayer, self.mockPlayer, timeoutLength=self.timeoutLength)
+        self.timeoutLength = 0.01
+        self.game = Game(
+            self.testPlayer, self.mockPlayer, timeoutLength=self.timeoutLength
+        )
         self.game.boardWidth = BOARD_WIDTH
         self.game.boardHeight = BOARD_HEIGHT
 
@@ -149,10 +148,9 @@ class TestGameClockViolations(unittest.TestCase):
         self.ship1 = Ship('ship1', 3, self.game)
         self.ship2 = Ship('ship2', 4, self.game)
         self.ship3 = Ship('ship3', 2, self.game)
-        self.testPlayer._setShips([self.ship1,
-                                   self.ship2,
-                                   self.ship3,
-                                   ])
+        self.testPlayer._setShips(
+            [self.ship1, self.ship2, self.ship3,]
+        )
         self.ship1.placeShip((5, 5), DOWN)
         self.ship2.placeShip((0, 6), RIGHT)
         self.ship3.placeShip((6, 5), RIGHT)
@@ -167,15 +165,21 @@ class TestGameClockViolations(unittest.TestCase):
 
     def test_shotHit(self):
         self.testPlayer.shotHit = generateLongRunningFunc(self.timeoutLength)
-        self.assertRaises(GameClockViolationException, self.testPlayer._shotHit, (0, 0), 'ship1')
+        self.assertRaises(
+            GameClockViolationException, self.testPlayer._shotHit, (0, 0), 'ship1'
+        )
 
     def test_shotMissed(self):
         self.testPlayer.shotMissed = generateLongRunningFunc(self.timeoutLength)
-        self.assertRaises(GameClockViolationException, self.testPlayer._shotMissed, (0, 0))
+        self.assertRaises(
+            GameClockViolationException, self.testPlayer._shotMissed, (0, 0)
+        )
 
     def test_shipSunk(self):
         self.testPlayer.shipSunk = generateLongRunningFunc(self.timeoutLength)
-        self.assertRaises(GameClockViolationException, self.testPlayer._shipSunk, 'ship1')
+        self.assertRaises(
+            GameClockViolationException, self.testPlayer._shipSunk, 'ship1'
+        )
 
     def test_fireShot(self):
         self.testPlayer.fireShot = generateLongRunningFunc(self.timeoutLength)
@@ -191,7 +195,9 @@ class TestGameClockViolations(unittest.TestCase):
 
     def test_opponentShot(self):
         self.testPlayer.opponentShot = generateLongRunningFunc(self.timeoutLength)
-        self.assertRaises(GameClockViolationException, self.testPlayer._opponentShot, (0, 0))
+        self.assertRaises(
+            GameClockViolationException, self.testPlayer._opponentShot, (0, 0)
+        )
 
     def test_isValidPoint(self):
         point1 = (0, 0)

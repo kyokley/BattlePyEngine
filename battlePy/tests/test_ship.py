@@ -1,12 +1,9 @@
 import unittest
+
 import mock
-from battlePy.ship import (Ship,
-                           UP,
-                           DOWN,
-                           LEFT,
-                           RIGHT,
-                           )
+
 from battlePy.game import Game
+from battlePy.ship import DOWN, LEFT, RIGHT, UP, Ship
 
 
 class TestPlaceShip(unittest.TestCase):
@@ -16,31 +13,19 @@ class TestPlaceShip(unittest.TestCase):
 
     def test_placeShipUp(self):
         self.testShip.placeShip((0, 0), UP)
-        self.assertEqual(self.testShip.locations, set([(0, 0),
-                                                        (0, 1),
-                                                        (0, 2),
-                                                        ]))
+        self.assertEqual(self.testShip.locations, set([(0, 0), (0, 1), (0, 2),]))
 
     def test_placeShipDown(self):
         self.testShip.placeShip((5, 5), DOWN)
-        self.assertEqual(self.testShip.locations, set([(5, 5),
-                                                        (5, 4),
-                                                        (5, 3),
-                                                        ]))
+        self.assertEqual(self.testShip.locations, set([(5, 5), (5, 4), (5, 3),]))
 
     def test_placeShipRight(self):
         self.testShip.placeShip((5, 2), RIGHT)
-        self.assertEqual(self.testShip.locations, set([(5, 2),
-                                                        (6, 2),
-                                                        (7, 2),
-                                                        ]))
+        self.assertEqual(self.testShip.locations, set([(5, 2), (6, 2), (7, 2),]))
 
     def test_placeShipLeft(self):
         self.testShip.placeShip((5, 2), LEFT)
-        self.assertEqual(self.testShip.locations, set([(5, 2),
-                                                        (4, 2),
-                                                        (3, 2),
-                                                        ]))
+        self.assertEqual(self.testShip.locations, set([(5, 2), (4, 2), (3, 2),]))
 
 
 class TestIsPlacementValid(unittest.TestCase):
@@ -95,14 +80,9 @@ class TestIsSunk(unittest.TestCase):
         self.testShip.placeShip((5, 5), UP)
 
     def test_notSunk(self):
-        self.testShip.hits = set([(5, 5),
-                                  (5, 6),
-                                  ])
+        self.testShip.hits = set([(5, 5), (5, 6),])
         self.assertFalse(self.testShip.isSunk())
 
     def test_sunk(self):
-        self.testShip.hits = set([(5, 5),
-                                  (5, 6),
-                                  (5, 7),
-                                  ])
+        self.testShip.hits = set([(5, 5), (5, 6), (5, 7),])
         self.assertTrue(self.testShip.isSunk())
