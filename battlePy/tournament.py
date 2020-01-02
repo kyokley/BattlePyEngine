@@ -1,21 +1,26 @@
-from series import Series
+import random
 from itertools import combinations
+
 from blessings import Terminal
 from tabulate import tabulate
-import random
+
+from series import Series
+
 
 class Tournament(object):
-    def __init__(self,
-                 players,
-                 numberOfGames,
-                 alternateFirstPlayer=True,
-                 debug=False,
-                 boardWidth=None,
-                 boardHeight=None,
-                 showVisualization=False,
-                 visualizationInterval=.01,
-                 showStatistics=False,
-                 clearBoardOnException=False):
+    def __init__(
+        self,
+        players,
+        numberOfGames,
+        alternateFirstPlayer=True,
+        debug=False,
+        boardWidth=None,
+        boardHeight=None,
+        showVisualization=False,
+        visualizationInterval=0.01,
+        showStatistics=False,
+        clearBoardOnException=False,
+    ):
         self.players = players
         self.numberOfGames = numberOfGames
         self.alternateFirstPlayer = alternateFirstPlayer
@@ -29,21 +34,28 @@ class Tournament(object):
         self.term = Terminal()
 
     def run(self):
-        self.results = dict([(player, [{'win': 0,
-                                        'lose': 0,
-                                        'draw': 0}, []]) for player in self.players])
-        self.series = [Series(x[0](),
-                              x[1](),
-                              self.numberOfGames,
-                              alternateFirstPlayer=self.alternateFirstPlayer,
-                              debug=self.debug,
-                              boardWidth=self.boardWidth,
-                              boardHeight=self.boardHeight,
-                              showVisualization=self.showVisualization,
-                              visualizationInterval=self.visualizationInterval,
-                              clearBoardOnException=self.clearBoardOnException,
-                              tournament=self)
-                            for x in combinations(self.players, 2)]
+        self.results = dict(
+            [
+                (player, [{'win': 0, 'lose': 0, 'draw': 0}, []])
+                for player in self.players
+            ]
+        )
+        self.series = [
+            Series(
+                x[0](),
+                x[1](),
+                self.numberOfGames,
+                alternateFirstPlayer=self.alternateFirstPlayer,
+                debug=self.debug,
+                boardWidth=self.boardWidth,
+                boardHeight=self.boardHeight,
+                showVisualization=self.showVisualization,
+                visualizationInterval=self.visualizationInterval,
+                clearBoardOnException=self.clearBoardOnException,
+                tournament=self,
+            )
+            for x in combinations(self.players, 2)
+        ]
         random.shuffle(self.series)
 
         self.series[0].player1._initializeGameBoard()
@@ -52,7 +64,7 @@ class Tournament(object):
 
         for idx, series in enumerate(self.series):
             if self.showVisualization:
-                print self.term.clear
+                print(self.term.clear)
                 self.series[0].player1._initializeGameBoard()
                 self.series[0].player2._initializeGameBoard()
                 series.printStats()
@@ -69,37 +81,49 @@ class Tournament(object):
                 self.results[type(result[0])][0]['draw'] += 1
                 self.results[type(result[1])][0]['draw'] += 1
 
-            print
+            print()
             self.displayLeaderBoard(nextGameIndex=idx + 1)
 
-        print self.term.move(0, 0)
-        print self.term.clear
+        print(self.term.move(0, 0))
+        print(self.term.clear)
         self.displayLeaderBoard()
-        print
-        print
+        print()
+        print()
         self.finalResults()
-        print
+        print()
 
     def displayLeaderBoard(self, nextGameIndex=None):
-        rankings = sorted(self.results.items(), key=lambda x: (-x[1][0]['win'], sum(x[1][0].values())))
+        rankings = sorted(
+            self.results.items(), key=lambda x: (-x[1][0]['win'], sum(x[1][0].values()))
+        )
         data = []
         for idx, ranking in enumerate(rankings):
-            data.append(('%s: %s' % (idx + 1, ranking[0].__name__),
-                         ranking[1][0]['win'],
-                         ranking[1][0]['lose'],
-                         ranking[1][0]['draw'],
-                         sum(ranking[1][0].values())))
+            data.append(
+                (
+                    '%s: %s' % (idx + 1, ranking[0].__name__),
+                    ranking[1][0]['win'],
+                    ranking[1][0]['lose'],
+                    ranking[1][0]['draw'],
+                    sum(ranking[1][0].values()),
+                )
+            )
         table = tabulate(data, headers=['Player', 'Wins', 'Losses', 'Draws', 'GP'])
 
         if nextGameIndex is not None and nextGameIndex < len(self.series):
-            print self.term.bold('Next matchup:') + ' %s v. %s' % (self.series[nextGameIndex].player1.name,
-                                                                   self.series[nextGameIndex].player2.name)
-            print
-        print self.term.bold('LeaderBoard')
-        print table
+            print(
+                self.term.bold('Next matchup:')
+                + ' %s v. %s'
+                % (
+                    self.series[nextGameIndex].player1.name,
+                    self.series[nextGameIndex].player2.name,
+                )
+            )
+            print()
+        print(self.term.bold('LeaderBoard'))
+        print(table)
 
     def finalResults(self):
         rankings = sorted(self.results.items(), key=lambda x: -x[1][0]['win'])
         for idx, ranking in enumerate(rankings):
-            print '%s: %s' % (idx + 1, ranking[0].__name__)
-            print '   with wins against %s' % ranking[1][1]
+            print('%s: %s' % (idx + 1, ranking[0].__name__))
+            print('   with wins against %s' % ranking[1][1])
