@@ -7,4 +7,4 @@ DEFAULT_SHIPS = [('Carrier', 5),
                  ('Submarine', 3),
                  ('Patrol Boat', 2)]
 
-TIMEOUT_LENGTH = 1000000 # 1000000 microseconds = 1 second
+TIMEOUT_LENGTH = 1000000  # 1000000 microseconds = 1 second

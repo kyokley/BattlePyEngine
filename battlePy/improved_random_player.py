@@ -4,6 +4,7 @@ from battlePy.default_config import (BOARD_WIDTH,
 from battlePy.ship import UP, RIGHT
 import random
 
+
 class ImprovedRandomPlayer(Player):
     def initPlayer(self):
         self.name = 'ImprovedRandomPlayer'

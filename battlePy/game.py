@@ -8,11 +8,14 @@ from battlePy.utils import docprop
 from time import sleep
 import traceback as tb
 
+
 class PlayerException(Exception):
     pass
 
+
 class SystemException(Exception):
     pass
+
 
 class Game(object):
     player1 = docprop('player1', 'First player')
@@ -72,7 +75,7 @@ class Game(object):
 
                 try:
                     player._newGame()
-                except Exception, e:
+                except Exception as e:
                     self.traceback = tb.format_exc()
                     raise PlayerException(e, player)
 
@@ -89,22 +92,22 @@ class Game(object):
             # Take turns blowing ships out of the water
             self._takeTurns()
             return self.winner, self.loser, self.turns
-        except PlayerException, e:
+        except PlayerException as e:
             return self._gameOver(e.args[1], exception=e)
 
     def _placeShips(self):
         for player in self.players:
-                for i in xrange(100):
-                    try:
-                        player._placeShips()
-                    except Exception, e:
-                        self.traceback = tb.format_exc()
-                        raise PlayerException(e, player)
+            for i in range(100):
+                try:
+                    player._placeShips()
+                except Exception as e:
+                    self.traceback = tb.format_exc()
+                    raise PlayerException(e, player)
 
-                    if player._allShipsPlacedLegally():
-                        break
-                else:
-                    raise PlayerException("%s failed to place ships after %s tries" % (player.name, i + 1), player)
+                if player._allShipsPlacedLegally():
+                    break
+            else:
+                raise PlayerException("%s failed to place ships after %s tries" % (player.name, i + 1), player)
 
     def _takeTurns(self):
         count = -1
@@ -119,7 +122,7 @@ class Game(object):
             try:
                 shot = offensivePlayer._fireShot()
                 self.playerShots[offensivePlayer].add(shot)
-            except Exception, e:
+            except Exception as e:
                 self.traceback = tb.format_exc()
                 raise PlayerException(e, offensivePlayer)
 
@@ -127,22 +130,21 @@ class Game(object):
 
             try:
                 defensivePlayer._opponentShot(shot)
-            except Exception, e:
+            except Exception as e:
                 self.traceback = tb.format_exc()
                 raise PlayerException(e, defensivePlayer)
 
             if hit:
                 try:
                     offensivePlayer._shotHit(shot, hitShip.name)
-                except Exception, e:
+                except Exception as e:
                     self.traceback = tb.format_exc()
                     raise PlayerException(e, offensivePlayer)
-
 
                 if hitShip.isSunk():
                     try:
                         offensivePlayer._shipSunk(hitShip.name)
-                    except Exception, e:
+                    except Exception as e:
                         self.traceback = tb.format_exc()
                         raise PlayerException(e, offensivePlayer)
                     done = defensivePlayer._checkAllShipsSunk()
@@ -153,7 +155,7 @@ class Game(object):
             else:
                 try:
                     offensivePlayer._shotMissed(shot)
-                except Exception, e:
+                except Exception as e:
                     self.traceback = tb.format_exc()
                     raise PlayerException(e, offensivePlayer)
 
@@ -176,8 +178,8 @@ class Game(object):
             try:
                 self.player1.printBoard()
                 self.player2.printBoard()
-            except Exception, e:
-                print 'Error displaying board: %s' % str(e)
+            except Exception as e:
+                print('Error displaying board: %s' % str(e))
 
         self.winner._gameWon()
         self.loser._gameLost()
@@ -190,9 +192,9 @@ class Game(object):
 
         for location in ship.locations:
             if (location[0] < 0 or
-                location[0] >= self.boardWidth or
-                location[1] < 0 or
-                location[1] >= self.boardHeight):
+                    location[0] >= self.boardWidth or
+                    location[1] < 0 or
+                    location[1] >= self.boardHeight):
                 return False
 
         return True

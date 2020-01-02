@@ -4,6 +4,7 @@ from blessings import Terminal
 from tabulate import tabulate
 import random
 
+
 class Tournament(object):
     def __init__(self,
                  players,
@@ -43,7 +44,7 @@ class Tournament(object):
                               visualizationInterval=self.visualizationInterval,
                               clearBoardOnException=self.clearBoardOnException,
                               tournament=self)
-                            for x in combinations(self.players, 2)]
+                       for x in combinations(self.players, 2)]
         random.shuffle(self.series)
 
         self.series[0].player1._initializeGameBoard()
@@ -52,7 +53,7 @@ class Tournament(object):
 
         for idx, series in enumerate(self.series):
             if self.showVisualization:
-                print self.term.clear
+                print(self.term.clear)
                 self.series[0].player1._initializeGameBoard()
                 self.series[0].player2._initializeGameBoard()
                 series.printStats()
@@ -69,16 +70,16 @@ class Tournament(object):
                 self.results[type(result[0])][0]['draw'] += 1
                 self.results[type(result[1])][0]['draw'] += 1
 
-            print
+            print()
             self.displayLeaderBoard(nextGameIndex=idx + 1)
 
-        print self.term.move(0, 0)
-        print self.term.clear
+        print(self.term.move(0, 0))
+        print(self.term.clear)
         self.displayLeaderBoard()
-        print
-        print
+        print()
+        print()
         self.finalResults()
-        print
+        print()
 
     def displayLeaderBoard(self, nextGameIndex=None):
         rankings = sorted(self.results.items(), key=lambda x: (-x[1][0]['win'], sum(x[1][0].values())))
@@ -92,14 +93,14 @@ class Tournament(object):
         table = tabulate(data, headers=['Player', 'Wins', 'Losses', 'Draws', 'GP'])
 
         if nextGameIndex is not None and nextGameIndex < len(self.series):
-            print self.term.bold('Next matchup:') + ' %s v. %s' % (self.series[nextGameIndex].player1.name,
-                                                                   self.series[nextGameIndex].player2.name)
-            print
-        print self.term.bold('LeaderBoard')
-        print table
+            print(self.term.bold('Next matchup:') + ' %s v. %s' % (self.series[nextGameIndex].player1.name,
+                                                                   self.series[nextGameIndex].player2.name))
+            print()
+        print(self.term.bold('LeaderBoard'))
+        print(table)
 
     def finalResults(self):
         rankings = sorted(self.results.items(), key=lambda x: -x[1][0]['win'])
         for idx, ranking in enumerate(rankings):
-            print '%s: %s' % (idx + 1, ranking[0].__name__)
-            print '   with wins against %s' % ranking[1][1]
+            print('%s: %s' % (idx + 1, ranking[0].__name__))
+            print('   with wins against %s' % ranking[1][1])

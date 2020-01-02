@@ -1,11 +1,13 @@
-import unittest, mock
+import unittest
+import mock
 from battlePy.ship import (Ship,
-                  UP,
-                  DOWN,
-                  LEFT,
-                  RIGHT,
-                  )
+                           UP,
+                           DOWN,
+                           LEFT,
+                           RIGHT,
+                           )
 from battlePy.game import Game
+
 
 class TestPlaceShip(unittest.TestCase):
     def setUp(self):
@@ -40,6 +42,7 @@ class TestPlaceShip(unittest.TestCase):
                                                         (3, 2),
                                                         ]))
 
+
 class TestIsPlacementValid(unittest.TestCase):
     def setUp(self):
         self.game = Game(mock.MagicMock(), mock.MagicMock())
@@ -64,6 +67,7 @@ class TestIsPlacementValid(unittest.TestCase):
         self.testShip.placeShip((9, 0), UP)
         self.assertTrue(self.testShip.isPlacementValid())
 
+
 class TestAddHit(unittest.TestCase):
     def setUp(self):
         self.game = Game(mock.MagicMock(), mock.MagicMock())
@@ -82,6 +86,7 @@ class TestAddHit(unittest.TestCase):
         self.testShip.addHit(shot)
 
         self.assertEquals(self.testShip.hits, set([(5, 7)]))
+
 
 class TestIsSunk(unittest.TestCase):
     def setUp(self):

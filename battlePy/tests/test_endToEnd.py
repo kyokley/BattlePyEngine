@@ -3,6 +3,7 @@ from battlePy.series import Series
 from battlePy.random_player import RandomPlayer
 from battlePy.improved_random_player import ImprovedRandomPlayer
 
+
 class TestPlay(unittest.TestCase):
     def setUp(self):
         self.series = Series(RandomPlayer(),

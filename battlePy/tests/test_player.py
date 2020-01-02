@@ -1,4 +1,6 @@
-import unittest, mock, time
+import unittest
+import mock
+import time
 from battlePy.ship import Ship
 from battlePy.player import Player, GameClockViolationException
 from battlePy.ship import DOWN, RIGHT
@@ -7,10 +9,12 @@ from battlePy.default_config import (BOARD_WIDTH,
                                      )
 from battlePy.game import Game
 
+
 def generateLongRunningFunc(timeLength):
     def longRunningFunc(*args, **kwargs):
         time.sleep(timeLength + .001)
     return longRunningFunc
+
 
 class TestShipsPlacedLegally(unittest.TestCase):
     def setUp(self):
@@ -64,6 +68,7 @@ class TestShipsPlacedLegally(unittest.TestCase):
         self.assertTrue(result)
         self.assertTrue(self.testPlayer._allShipsPlacedLegally())
 
+
 class TestCheckIsHit(unittest.TestCase):
     def setUp(self):
         self.testPlayer = Player()
@@ -96,6 +101,7 @@ class TestCheckIsHit(unittest.TestCase):
         self.assertTrue(hit)
         self.assertEqual(hitShip, self.ship1)
 
+
 class TestCheckAllShipsSunk(unittest.TestCase):
     def setUp(self):
         self.testPlayer = Player()
@@ -127,6 +133,7 @@ class TestCheckAllShipsSunk(unittest.TestCase):
         self.ship3.hits = self.ship3.locations
 
         self.assertTrue(self.testPlayer._checkAllShipsSunk())
+
 
 class TestGameClockViolations(unittest.TestCase):
     def setUp(self):

@@ -1,8 +1,9 @@
 from battlePy.player import Player
 from battlePy.default_config import (BOARD_WIDTH,
-                    BOARD_HEIGHT)
+                                     BOARD_HEIGHT)
 from battlePy.ship import UP, RIGHT
 import random
+
 
 class RandomPlayer(Player):
     def initPlayer(self):
