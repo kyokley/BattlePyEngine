@@ -1,8 +1,10 @@
 from setuptools import setup, find_packages
 
+
 def readme():
     with open('README.md') as f:
         return f.read()
+
 
 setup(name='BattlePy',
       version='0.3.1',
@@ -18,5 +20,5 @@ setup(name='BattlePy',
                         'tabulate'],
       test_suite='nose.collector',
       tests_require=['nose',
-                     'mock',],
+                     'mock'],
       zip_safe=False)

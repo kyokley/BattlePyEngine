@@ -1,6 +1,10 @@
-import unittest, mock
-from battlePy.game import Game, PlayerException
+import unittest
+
+import mock
+
 from battlePy.default_config import DEFAULT_SHIPS
+from battlePy.game import Game, PlayerException
+
 
 class TestPlayGame(unittest.TestCase):
     def setUp(self):
@@ -20,6 +24,7 @@ class TestPlayGame(unittest.TestCase):
 
         self.assertTrue(self.game._placeShips.called)
         self.assertTrue(self.game._takeTurns.called)
+
 
 class TestPlaceShips(unittest.TestCase):
     def setUp(self):

@@ -9,6 +9,7 @@ VECTOR_DICT = {UP: (0, 1),
                LEFT: (-1, 0),
                RIGHT: (1, 0)}
 
+
 class Ship(object):
     name = docprop('name', 'Name of the ship')
     size = docprop('size', 'Size of the ship')
@@ -34,8 +35,10 @@ class Ship(object):
         self.locations.add(newLocation)
 
         for i in range(self.size - 1):
-            newLocation = (newLocation[0] + VECTOR_DICT[orientation][0],
-                            newLocation[1] + VECTOR_DICT[orientation][1])
+            newLocation = (
+                newLocation[0] + VECTOR_DICT[orientation][0],
+                newLocation[1] + VECTOR_DICT[orientation][1],
+            )
             self.locations.add(newLocation)
 
     def isPlacementValid(self):
