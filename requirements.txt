@@ -1,6 +1,1 @@
-pytest
-mock
-pdbpp
-bpython
-isort
-black
+-e .

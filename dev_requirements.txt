@@ -1,0 +1,6 @@
+-r requirements.txt
+pytest
+pdbpp
+bpython
+isort
+black
