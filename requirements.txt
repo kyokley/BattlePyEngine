@@ -1,2 +1,6 @@
-nose
+pytest
 mock
+pdbpp
+bpython
+isort
+black
