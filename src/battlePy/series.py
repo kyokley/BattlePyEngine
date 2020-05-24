@@ -1,6 +1,8 @@
-from battlePy.game import Game
-from blessings import Terminal
 import math
+
+from blessings import Terminal
+
+from battlePy.game import Game
 
 
 class Series(object):
