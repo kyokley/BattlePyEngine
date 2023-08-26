@@ -27,7 +27,11 @@ class TestShipsPlacedLegally(unittest.TestCase):
         self.ship2 = Ship('ship2', 4, self.game)
         self.ship3 = Ship('ship3', 2, self.game)
         self.testPlayer._setShips(
-            [self.ship1, self.ship2, self.ship3,]
+            [
+                self.ship1,
+                self.ship2,
+                self.ship3,
+            ]
         )
 
     def test_shipPlacedOffBoard(self):
@@ -79,7 +83,11 @@ class TestCheckIsHit(unittest.TestCase):
         self.ship2 = Ship('ship2', 4, self.game)
         self.ship3 = Ship('ship3', 2, self.game)
         self.testPlayer._setShips(
-            [self.ship1, self.ship2, self.ship3,]
+            [
+                self.ship1,
+                self.ship2,
+                self.ship3,
+            ]
         )
         self.ship1.placeShip((5, 5), DOWN)
         self.ship2.placeShip((0, 6), RIGHT)
@@ -111,7 +119,11 @@ class TestCheckAllShipsSunk(unittest.TestCase):
         self.ship2 = Ship('ship2', 4, self.game)
         self.ship3 = Ship('ship3', 2, self.game)
         self.testPlayer._setShips(
-            [self.ship1, self.ship2, self.ship3,]
+            [
+                self.ship1,
+                self.ship2,
+                self.ship3,
+            ]
         )
         self.ship1.placeShip((5, 5), DOWN)
         self.ship2.placeShip((0, 6), RIGHT)
@@ -149,7 +161,11 @@ class TestGameClockViolations(unittest.TestCase):
         self.ship2 = Ship('ship2', 4, self.game)
         self.ship3 = Ship('ship3', 2, self.game)
         self.testPlayer._setShips(
-            [self.ship1, self.ship2, self.ship3,]
+            [
+                self.ship1,
+                self.ship2,
+                self.ship3,
+            ]
         )
         self.ship1.placeShip((5, 5), DOWN)
         self.ship2.placeShip((0, 6), RIGHT)

@@ -2,9 +2,8 @@ import random
 from itertools import combinations
 
 from blessings import Terminal
-from tabulate import tabulate
-
 from series import Series
+from tabulate import tabulate
 
 
 class Tournament(object):

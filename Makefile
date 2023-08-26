@@ -1,8 +1,8 @@
 .PHONY: autoformat tests
 
 autoformat: build-dev
-	git ls-files | grep -P '\.py$$' | xargs docker run --rm -t -v $$(pwd):/code/BattlePyEngine kyokley/battlepyengine /venv/bin/isort
-	git ls-files | grep -P '\.py$$' | xargs docker run --rm -t -v $$(pwd):/code/BattlePyEngine kyokley/battlepyengine /venv/bin/black -S
+	git ls-files | grep -E '\.py$$' | xargs docker run --rm -t -v $$(pwd):/code/BattlePyEngine kyokley/battlepyengine /venv/bin/isort
+	git ls-files | grep -E '\.py$$' | xargs docker run --rm -t -v $$(pwd):/code/BattlePyEngine kyokley/battlepyengine /venv/bin/black -S
 
 tests: build-dev
 	docker run --rm -it -v $$(pwd):/code/BattlePyEngine kyokley/battlepyengine /venv/bin/pytest
