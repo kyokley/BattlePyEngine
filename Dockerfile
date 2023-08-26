@@ -15,12 +15,14 @@ RUN apt-get update && apt-get install -y git g++ python3-dev
 
 WORKDIR /code
 
-COPY requirements.txt setup.py README.md /code/BattlePyEngine/
+COPY requirements.txt /code/BattlePyEngine/
 WORKDIR /code/BattlePyEngine
 
 RUN $VIRTUAL_ENV/bin/pip install --upgrade pip && \
         $VIRTUAL_ENV/bin/pip install -r requirements.txt
 
+
+FROM base AS prod
 COPY . /code/BattlePyEngine
 
 RUN $VIRTUAL_ENV/bin/pip install -e .
@@ -28,4 +30,8 @@ RUN $VIRTUAL_ENV/bin/pip install -e .
 CMD ["/bin/bash"]
 
 FROM base AS dev
+COPY dev_requirements.txt /code/BattlePyEngine/
 RUN $VIRTUAL_ENV/bin/pip install -r dev_requirements.txt
+
+COPY . /code/BattlePyEngine
+RUN $VIRTUAL_ENV/bin/pip install -e .
