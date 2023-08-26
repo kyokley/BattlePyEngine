@@ -1,11 +1,12 @@
-import unittest
+import pytest
 
 from battlePy.improved_random_player import ImprovedRandomPlayer
 from battlePy.random_player import RandomPlayer
 from battlePy.series import Series
 
 
-class TestPlay(unittest.TestCase):
+class TestPlay:
+    @pytest.fixture(autouse=True)
     def setUp(self):
         self.series = Series(
             RandomPlayer(),

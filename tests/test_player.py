@@ -1,7 +1,7 @@
 import time
-import unittest
 
 import mock
+import pytest
 
 from battlePy.default_config import BOARD_HEIGHT, BOARD_WIDTH
 from battlePy.game import Game
@@ -16,7 +16,8 @@ def generateLongRunningFunc(timeLength):
     return longRunningFunc
 
 
-class TestShipsPlacedLegally(unittest.TestCase):
+class TestShipsPlacedLegally:
+    @pytest.fixture(autouse=True)
     def setUp(self):
         self.testPlayer = Player()
         self.mockPlayer = mock.MagicMock()
@@ -38,8 +39,8 @@ class TestShipsPlacedLegally(unittest.TestCase):
         self.ship1.placeShip((0, 0), DOWN)
         result = self.testPlayer.isShipPlacedLegally(self.ship1)
 
-        self.assertFalse(result)
-        self.assertFalse(self.testPlayer._allShipsPlacedLegally())
+        assert not result
+        assert not self.testPlayer._allShipsPlacedLegally()
 
     def test_shipsOverlapping(self):
         self.ship1.placeShip((5, 5), DOWN)
@@ -47,14 +48,14 @@ class TestShipsPlacedLegally(unittest.TestCase):
         self.ship3.placeShip((5, 5), RIGHT)
 
         result = self.testPlayer.isShipPlacedLegally(self.ship1)
-        self.assertFalse(result)
+        assert not result
 
         result = self.testPlayer.isShipPlacedLegally(self.ship2)
-        self.assertTrue(result)
+        assert result
 
         result = self.testPlayer.isShipPlacedLegally(self.ship3)
-        self.assertFalse(result)
-        self.assertFalse(self.testPlayer._allShipsPlacedLegally())
+        assert not result
+        assert not self.testPlayer._allShipsPlacedLegally()
 
     def test_shipsAreValid(self):
         self.ship1.placeShip((5, 5), DOWN)
@@ -62,17 +63,18 @@ class TestShipsPlacedLegally(unittest.TestCase):
         self.ship3.placeShip((6, 5), RIGHT)
 
         result = self.testPlayer.isShipPlacedLegally(self.ship1)
-        self.assertTrue(result)
+        assert result
 
         result = self.testPlayer.isShipPlacedLegally(self.ship2)
-        self.assertTrue(result)
+        assert result
 
         result = self.testPlayer.isShipPlacedLegally(self.ship3)
-        self.assertTrue(result)
-        self.assertTrue(self.testPlayer._allShipsPlacedLegally())
+        assert result
+        assert self.testPlayer._allShipsPlacedLegally()
 
 
-class TestCheckIsHit(unittest.TestCase):
+class TestCheckIsHit:
+    @pytest.fixture(autouse=True)
     def setUp(self):
         self.testPlayer = Player()
         self.mockPlayer = mock.MagicMock()
@@ -97,18 +99,19 @@ class TestCheckIsHit(unittest.TestCase):
         shot = (1, 1)
         hit, hitShip = self.testPlayer._checkIsHit(shot)
 
-        self.assertFalse(hit)
-        self.assertEqual(hitShip, None)
+        assert not hit
+        assert hitShip is None
 
     def test_checkIsHit(self):
         shot = (5, 3)
         hit, hitShip = self.testPlayer._checkIsHit(shot)
 
-        self.assertTrue(hit)
-        self.assertEqual(hitShip, self.ship1)
+        assert hit
+        assert hitShip == self.ship1
 
 
-class TestCheckAllShipsSunk(unittest.TestCase):
+class TestCheckAllShipsSunk:
+    @pytest.fixture(autouse=True)
     def setUp(self):
         self.testPlayer = Player()
         self.mockPlayer = mock.MagicMock()
@@ -130,21 +133,22 @@ class TestCheckAllShipsSunk(unittest.TestCase):
         self.ship3.placeShip((6, 5), RIGHT)
 
     def test_noShipsSunk(self):
-        self.assertFalse(self.testPlayer._checkAllShipsSunk())
+        assert not self.testPlayer._checkAllShipsSunk()
 
     def test_oneShipSunk(self):
         self.ship1.hits = self.ship1.locations
-        self.assertFalse(self.testPlayer._checkAllShipsSunk())
+        assert not self.testPlayer._checkAllShipsSunk()
 
     def test_allShipsSunk(self):
         self.ship1.hits = self.ship1.locations
         self.ship2.hits = self.ship2.locations
         self.ship3.hits = self.ship3.locations
 
-        self.assertTrue(self.testPlayer._checkAllShipsSunk())
+        assert self.testPlayer._checkAllShipsSunk()
 
 
-class TestGameClockViolations(unittest.TestCase):
+class TestGameClockViolations:
+    @pytest.fixture(autouse=True)
     def setUp(self):
         self.testPlayer = Player()
         self.mockPlayer = mock.MagicMock()
@@ -173,33 +177,33 @@ class TestGameClockViolations(unittest.TestCase):
 
     def test_newGame(self):
         self.testPlayer.newGame = generateLongRunningFunc(self.timeoutLength)
-        self.assertRaises(GameClockViolationException, self.testPlayer._newGame)
+        with pytest.raises(GameClockViolationException):
+            self.testPlayer._newGame()
 
     def test_placeShips(self):
         self.testPlayer.placeShips = generateLongRunningFunc(self.timeoutLength)
-        self.assertRaises(GameClockViolationException, self.testPlayer._placeShips)
+        with pytest.raises(GameClockViolationException):
+            self.testPlayer._placeShips()
 
     def test_shotHit(self):
         self.testPlayer.shotHit = generateLongRunningFunc(self.timeoutLength)
-        self.assertRaises(
-            GameClockViolationException, self.testPlayer._shotHit, (0, 0), 'ship1'
-        )
+        with pytest.raises(GameClockViolationException):
+            self.testPlayer._shotHit((0, 0), 'ship1')
 
     def test_shotMissed(self):
         self.testPlayer.shotMissed = generateLongRunningFunc(self.timeoutLength)
-        self.assertRaises(
-            GameClockViolationException, self.testPlayer._shotMissed, (0, 0)
-        )
+        with pytest.raises(GameClockViolationException):
+            self.testPlayer._shotMissed((0, 0))
 
     def test_shipSunk(self):
         self.testPlayer.shipSunk = generateLongRunningFunc(self.timeoutLength)
-        self.assertRaises(
-            GameClockViolationException, self.testPlayer._shipSunk, 'ship1'
-        )
+        with pytest.raises(GameClockViolationException):
+            self.testPlayer._shipSunk('ship1')
 
     def test_fireShot(self):
         self.testPlayer.fireShot = generateLongRunningFunc(self.timeoutLength)
-        self.assertRaises(GameClockViolationException, self.testPlayer._fireShot)
+        with pytest.raises(GameClockViolationException):
+            self.testPlayer._fireShot()
 
     def test_gameWon(self):
         self.testPlayer.gameWon = generateLongRunningFunc(self.timeoutLength)
@@ -211,9 +215,8 @@ class TestGameClockViolations(unittest.TestCase):
 
     def test_opponentShot(self):
         self.testPlayer.opponentShot = generateLongRunningFunc(self.timeoutLength)
-        self.assertRaises(
-            GameClockViolationException, self.testPlayer._opponentShot, (0, 0)
-        )
+        with pytest.raises(GameClockViolationException):
+            self.testPlayer._opponentShot((0, 0))
 
     def test_isValidPoint(self):
         point1 = (0, 0)
@@ -225,12 +228,12 @@ class TestGameClockViolations(unittest.TestCase):
         point7 = (self.game.boardWidth, self.game.boardHeight)
         point8 = (-10, -10)
 
-        self.assertTrue(self.testPlayer._isValidPoint(point1))
-        self.assertTrue(self.testPlayer._isValidPoint(point2))
-        self.assertTrue(self.testPlayer._isValidPoint(point3))
-        self.assertTrue(self.testPlayer._isValidPoint(point4))
+        assert self.testPlayer._isValidPoint(point1)
+        assert self.testPlayer._isValidPoint(point2)
+        assert self.testPlayer._isValidPoint(point3)
+        assert self.testPlayer._isValidPoint(point4)
 
-        self.assertFalse(self.testPlayer._isValidPoint(point5))
-        self.assertFalse(self.testPlayer._isValidPoint(point6))
-        self.assertFalse(self.testPlayer._isValidPoint(point7))
-        self.assertFalse(self.testPlayer._isValidPoint(point8))
+        assert not self.testPlayer._isValidPoint(point5)
+        assert not self.testPlayer._isValidPoint(point6)
+        assert not self.testPlayer._isValidPoint(point7)
+        assert not self.testPlayer._isValidPoint(point8)

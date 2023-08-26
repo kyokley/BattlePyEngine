@@ -1,95 +1,85 @@
-import unittest
-
 import mock
+import pytest
 
 from battlePy.game import Game
 from battlePy.ship import DOWN, LEFT, RIGHT, UP, Ship
 
 
-class TestPlaceShip(unittest.TestCase):
+class TestPlaceShip:
+    @pytest.fixture(autouse=True)
     def setUp(self):
         self.game = Game(mock.MagicMock(), mock.MagicMock())
         self.testShip = Ship('testShip1', 3, self.game)
 
     def test_placeShipUp(self):
         self.testShip.placeShip((0, 0), UP)
-        self.assertEqual(
-            self.testShip.locations,
-            set(
-                [
-                    (0, 0),
-                    (0, 1),
-                    (0, 2),
-                ]
-            ),
+        assert self.testShip.locations == set(
+            [
+                (0, 0),
+                (0, 1),
+                (0, 2),
+            ]
         )
 
     def test_placeShipDown(self):
         self.testShip.placeShip((5, 5), DOWN)
-        self.assertEqual(
-            self.testShip.locations,
-            set(
-                [
-                    (5, 5),
-                    (5, 4),
-                    (5, 3),
-                ]
-            ),
+        assert self.testShip.locations == set(
+            [
+                (5, 5),
+                (5, 4),
+                (5, 3),
+            ]
         )
 
     def test_placeShipRight(self):
         self.testShip.placeShip((5, 2), RIGHT)
-        self.assertEqual(
-            self.testShip.locations,
-            set(
-                [
-                    (5, 2),
-                    (6, 2),
-                    (7, 2),
-                ]
-            ),
+        assert self.testShip.locations == set(
+            [
+                (5, 2),
+                (6, 2),
+                (7, 2),
+            ]
         )
 
     def test_placeShipLeft(self):
         self.testShip.placeShip((5, 2), LEFT)
-        self.assertEqual(
-            self.testShip.locations,
-            set(
-                [
-                    (5, 2),
-                    (4, 2),
-                    (3, 2),
-                ]
-            ),
+        assert self.testShip.locations == set(
+            [
+                (5, 2),
+                (4, 2),
+                (3, 2),
+            ]
         )
 
 
-class TestIsPlacementValid(unittest.TestCase):
+class TestIsPlacementValid:
+    @pytest.fixture(autouse=True)
     def setUp(self):
         self.game = Game(mock.MagicMock(), mock.MagicMock())
         self.testShip = Ship('testShip1', 3, self.game)
 
     def test_isPlacementValid(self):
         self.testShip.placeShip((0, 1), DOWN)
-        self.assertFalse(self.testShip.isPlacementValid())
+        assert not self.testShip.isPlacementValid()
 
         self.testShip.placeShip((0, 2), LEFT)
-        self.assertFalse(self.testShip.isPlacementValid())
+        assert not self.testShip.isPlacementValid()
 
         self.testShip.placeShip((10, 2), RIGHT)
-        self.assertFalse(self.testShip.isPlacementValid())
+        assert not self.testShip.isPlacementValid()
 
         self.testShip.placeShip((5, 5), UP)
-        self.assertTrue(self.testShip.isPlacementValid())
+        assert self.testShip.isPlacementValid()
 
         self.testShip.placeShip((0, 0), UP)
-        self.assertTrue(self.testShip.isPlacementValid())
+        assert self.testShip.isPlacementValid()
 
         self.testShip.placeShip((9, 0), UP)
-        self.assertTrue(self.testShip.isPlacementValid())
+        assert self.testShip.isPlacementValid()
 
 
-class TestAddHit(unittest.TestCase):
+class TestAddHit:
+    @pytest.fixture(autouse=True)
     def setUp(self):
         self.game = Game(mock.MagicMock(), mock.MagicMock())
         self.testShip = Ship('testShip1', 3, self.game)
@@ -99,17 +89,18 @@ class TestAddHit(unittest.TestCase):
         shot = (0, 0)
         self.testShip.addHit(shot)
 
-        self.assertEqual(self.testShip.hits, set())
+        assert self.testShip.hits == set()
 
     def test_hit(self):
         self.testShip.placeShip((5, 5), UP)
         shot = (5, 7)
         self.testShip.addHit(shot)
 
-        self.assertEqual(self.testShip.hits, set([(5, 7)]))
+        assert self.testShip.hits == set([(5, 7)])
 
 
-class TestIsSunk(unittest.TestCase):
+class TestIsSunk:
+    @pytest.fixture(autouse=True)
     def setUp(self):
         self.game = Game(mock.MagicMock(), mock.MagicMock())
         self.testShip = Ship('testShip1', 3, self.game)
@@ -122,7 +113,7 @@ class TestIsSunk(unittest.TestCase):
                 (5, 6),
             ]
         )
-        self.assertFalse(self.testShip.isSunk())
+        assert not self.testShip.isSunk()
 
     def test_sunk(self):
         self.testShip.hits = set(
@@ -132,4 +123,4 @@ class TestIsSunk(unittest.TestCase):
                 (5, 7),
             ]
         )
-        self.assertTrue(self.testShip.isSunk())
+        assert self.testShip.isSunk()
