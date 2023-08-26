@@ -7,7 +7,7 @@ autoformat: build-dev
 tests: pytest bandit
 
 pytest: build-dev
-	docker run --rm -it -v $$(pwd):/code/BattlePyEngine kyokley/battlepyengine /venv/bin/pytest
+	docker run --rm -t -v $$(pwd):/code/BattlePyEngine kyokley/battlepyengine /venv/bin/pytest
 
 bandit: build-dev
 	git ls-files | grep -E '\.py$$' | xargs docker run --rm -t -v $$(pwd):/code/BattlePyEngine kyokley/battlepyengine /venv/bin/black -S --check
