@@ -1,12 +1,12 @@
-import unittest
-
 import mock
+import pytest
 
 from battlePy.default_config import DEFAULT_SHIPS
 from battlePy.game import Game, PlayerException
 
 
-class TestPlayGame(unittest.TestCase):
+class TestPlayGame:
+    @pytest.fixture(autouse=True)
     def setUp(self):
         self.player1 = mock.MagicMock()
         self.player2 = mock.MagicMock()
@@ -19,14 +19,15 @@ class TestPlayGame(unittest.TestCase):
     def test_playGame(self):
         self.game.playGame()
 
-        self.assertTrue(self.player1._newGame.called)
-        self.assertTrue(self.player2._newGame.called)
+        assert self.player1._newGame.called
+        assert self.player2._newGame.called
 
-        self.assertTrue(self.game._placeShips.called)
-        self.assertTrue(self.game._takeTurns.called)
+        assert self.game._placeShips.called
+        assert self.game._takeTurns.called
 
 
-class TestPlaceShips(unittest.TestCase):
+class TestPlaceShips:
+    @pytest.fixture(autouse=True)
     def setUp(self):
         self.player1 = mock.MagicMock()
         self.player2 = mock.MagicMock()
@@ -39,11 +40,11 @@ class TestPlaceShips(unittest.TestCase):
 
         self.game._placeShips()
 
-        self.assertTrue(self.player1._placeShips.called)
-        self.assertTrue(self.player2._placeShips.called)
+        assert self.player1._placeShips.called
+        assert self.player2._placeShips.called
 
-        self.assertTrue(self.player1._allShipsPlacedLegally.called)
-        self.assertTrue(self.player2._allShipsPlacedLegally.called)
+        assert self.player1._allShipsPlacedLegally.called
+        assert self.player2._allShipsPlacedLegally.called
 
     def test_shipsPlacedIllegally(self):
         self.player1._allShipsPlacedLegally.return_value = True
@@ -54,11 +55,11 @@ class TestPlaceShips(unittest.TestCase):
         except Exception as e:
             exception = e
 
-        self.assertTrue(self.player1._placeShips.called)
-        self.assertTrue(self.player2._placeShips.called)
+        assert self.player1._placeShips.called
+        assert self.player2._placeShips.called
 
-        self.assertTrue(self.player1._allShipsPlacedLegally.called)
-        self.assertTrue(self.player2._allShipsPlacedLegally.called)
+        assert self.player1._allShipsPlacedLegally.called
+        assert self.player2._allShipsPlacedLegally.called
 
-        self.assertEqual(self.player2, exception.args[1])
-        self.assertTrue(isinstance(exception, PlayerException))
+        assert self.player2 == exception.args[1]
+        assert isinstance(exception, PlayerException)

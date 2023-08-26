@@ -1,6 +1,8 @@
 -r requirements.txt
-pytest
-pdbpp
+black
 bpython
 isort
-black
+mock
+pdbpp
+pytest
+pytest-mock

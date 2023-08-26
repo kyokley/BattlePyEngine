@@ -2,12 +2,11 @@ import random
 from itertools import combinations
 
 from blessings import Terminal
+from series import Series
 from tabulate import tabulate
 
-from series import Series
 
-
-class Tournament(object):
+class Tournament:
     def __init__(
         self,
         players,

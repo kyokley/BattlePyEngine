@@ -19,7 +19,7 @@ class SystemException(Exception):
     pass
 
 
-class Game(object):
+class Game:
     player1 = docprop('player1', 'First player')
     player2 = docprop('player2', 'Second player')
     winner = docprop('winner', 'Winner of the game')
@@ -67,11 +67,11 @@ class Game(object):
         self.playerShots = {self.player1: set(), self.player2: set()}
 
     def createShips(self):
-        ''' Generate a list of ship objects based on the given ship specifications '''
+        '''Generate a list of ship objects based on the given ship specifications'''
         return [Ship(*x, game=self) for x in self.shipSpecs]
 
     def playGame(self):
-        ''' Start the game '''
+        '''Start the game'''
         try:
             for player in self.players:
                 player.currentGame = self
@@ -190,7 +190,7 @@ class Game(object):
         return self.winner, self.loser, self.turns
 
     def isValidShipPlacement(self, ship):
-        ''' Is ship placement valid for this game board? '''
+        '''Is ship placement valid for this game board?'''
         if not ship.locations:
             return False
 

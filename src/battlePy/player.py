@@ -34,7 +34,7 @@ def _gameClockTimedMethod(func):
     return func_wrapper
 
 
-class Player(object):
+class Player:
     ships = docprop('ships', "List of this player's ship objects")
     name = docprop('name', 'Player name')
     currentGame = docprop('currentGame', 'Game that is currently being played')
@@ -62,25 +62,25 @@ class Player(object):
             return None
 
     def initPlayer(self, *args, **kwargs):
-        ''' Initialize this player '''
+        '''Initialize this player'''
         pass
 
     @property
     def boardWidth(self):
-        ''' Width of the current game board'''
+        '''Width of the current game board'''
         return self.currentGame and self.currentGame.boardWidth or None
 
     @property
     def boardHeight(self):
-        ''' Height of the current game board'''
+        '''Height of the current game board'''
         return self.currentGame and self.currentGame.boardHeight or None
 
     def placeShips(self):
-        ''' Determine where ships should be placed and place them on the game board '''
+        '''Determine where ships should be placed and place them on the game board'''
         raise NotImplementedError()
 
     def isShipPlacedLegally(self, refShip):
-        ''' Determine if a ship has been placed legally '''
+        '''Determine if a ship has been placed legally'''
         if not refShip.isPlacementValid():
             return False
 
@@ -95,7 +95,7 @@ class Player(object):
         return True
 
     def shotHit(self, shot, shipName):
-        ''' Method called when a ship is hit
+        '''Method called when a ship is hit
 
         Args:
             shot (tuple): x, y pair of the shot location
@@ -104,7 +104,7 @@ class Player(object):
         pass
 
     def shotMissed(self, shot):
-        ''' Method called when a shot misses
+        '''Method called when a shot misses
 
         Args:
             shot (tuple): x, y pair of the shot location
@@ -112,7 +112,7 @@ class Player(object):
         pass
 
     def shipSunk(self, shipName):
-        ''' Method called when a ship is sunk
+        '''Method called when a ship is sunk
 
         Args:
             shipName (string): Name of the ship that was hit
@@ -120,7 +120,7 @@ class Player(object):
         pass
 
     def fireShot(self):
-        ''' Get an x, y coordinate pair for a shot location
+        '''Get an x, y coordinate pair for a shot location
 
         Yields:
             tuple: x, y coordinate pair
@@ -314,7 +314,6 @@ class Player(object):
         )
 
     def printBoard(self):
-
         print(self.term.move(0 + self.vOffset, 0 + self.hOffset) + self.name[:12])
         for i in range(1, self.currentGame.boardWidth + 1):
             print(self.term.move(1 + self.vOffset, i + self.hOffset) + '-')
