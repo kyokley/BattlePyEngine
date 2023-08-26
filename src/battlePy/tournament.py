@@ -2,7 +2,7 @@ import random
 from itertools import combinations
 
 from blessings import Terminal
-from series import Series
+from battlePy.series import Series
 from tabulate import tabulate
 
 
