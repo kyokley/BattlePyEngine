@@ -19,7 +19,7 @@ class SystemException(Exception):
     pass
 
 
-class Game(object):
+class Game:
     player1 = docprop('player1', 'First player')
     player2 = docprop('player2', 'Second player')
     winner = docprop('winner', 'Winner of the game')

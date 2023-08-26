@@ -4,7 +4,7 @@ from battlePy.utils import docprop
 VECTOR_DICT = {UP: (0, 1), DOWN: (0, -1), LEFT: (-1, 0), RIGHT: (1, 0)}
 
 
-class Ship(object):
+class Ship:
     name = docprop('name', 'Name of the ship')
     size = docprop('size', 'Size of the ship')
     hits = docprop('hits', 'Set of current hit locations')

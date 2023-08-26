@@ -6,7 +6,7 @@ from series import Series
 from tabulate import tabulate
 
 
-class Tournament(object):
+class Tournament:
     def __init__(
         self,
         players,

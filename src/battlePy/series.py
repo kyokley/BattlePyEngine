@@ -5,7 +5,7 @@ from blessings import Terminal
 from battlePy.game import Game
 
 
-class Series(object):
+class Series:
     def __init__(
         self,
         player1,

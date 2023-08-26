@@ -34,7 +34,7 @@ def _gameClockTimedMethod(func):
     return func_wrapper
 
 
-class Player(object):
+class Player:
     ships = docprop('ships', "List of this player's ship objects")
     name = docprop('name', 'Player name')
     currentGame = docprop('currentGame', 'Game that is currently being played')
